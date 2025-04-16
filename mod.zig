@@ -41,7 +41,7 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int open(const char *pathname, int flags, ... /* mode_t mode */ );
 
 // close
-// int creat(const char *pathname, mode_t mode);
+// int close(int fd);
 
 // stat
 // int stat(const char *restrict pathname, struct stat *restrict statbuf);

@@ -1,5 +1,3 @@
 # zig-sys-linux
 
-OS bindings layer for directly making Linux syscalls.
-
-Zig-ifies the API while preserving errno error values.
+OS bindings layer for directly making Linux syscalls. Preserves original errno error values.
