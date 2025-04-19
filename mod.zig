@@ -73,8 +73,10 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // rt_sigaction
 
 // rt_sigprocmask
+// int sigprocmask(int how, const sigset_t *_Nullable restrict set, sigset_t *_Nullable restrict oldset);
 
 // rt_sigreturn
+// int sigreturn(...);
 
 // ioctl
 
@@ -409,12 +411,16 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int syscall(SYS_capset, cap_user_header_t hdrp, const cap_user_data_t datap);
 
 // rt_sigpending
+// int sigpending(sigset_t *set);
 
 // rt_sigtimedwait
+// int sigtimedwait(const sigset_t *restrict set, siginfo_t *_Nullable restrict info, const struct timespec *restrict timeout);
 
 // rt_sigqueueinfo
+// int syscall(SYS_rt_sigqueueinfo, pid_t tgid, int sig, siginfo_t *info);
 
 // rt_sigsuspend
+// int sigsuspend(const sigset_t *mask);
 
 // sigaltstack
 // int sigaltstack(const stack_t *_Nullable restrict ss, stack_t *_Nullable restrict old_ss);
@@ -858,23 +864,31 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int epoll_pwait(int epfd, struct epoll_event *events, int maxevents, int timeout, const sigset_t *_Nullable sigmask);
 
 // signalfd
+// int signalfd(int fd, const sigset_t *mask, int flags);
 
 // timerfd_create
+// int timerfd_create(int clockid, int flags);
 
 // eventfd
+// int eventfd(unsigned int initval, int flags);
 
 // fallocate
+// int fallocate(int fd, int mode, off_t offset, off_t len);
 
 // timerfd_settime
+// int timerfd_settime(int fd, int flags, const struct itimerspec *new_value, struct itimerspec *_Nullable old_value);
 
 // timerfd_gettime
+// int timerfd_gettime(int fd, struct itimerspec *curr_value);
 
 // accept4
 // int accept4(int sockfd, struct sockaddr *_Nullable restrict addr, socklen_t *_Nullable restrict addrlen, int flags);
 
 // signalfd4
+// int signalfd(int fd, const sigset_t *mask, int flags);
 
 // eventfd2
+// int eventfd(unsigned int initval, int flags);
 
 // epoll_create1
 // int epoll_create1(int flags);
@@ -895,21 +909,28 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // ssize_t pwritev(int fd, const struct iovec *iov, int iovcnt, off_t offset);
 
 // rt_tgsigqueueinfo
+// int syscall(SYS_rt_tgsigqueueinfo, pid_t tgid, pid_t tid, int sig, siginfo_t *info);
 
 // perf_event_open
+// int syscall(SYS_perf_event_open, struct perf_event_attr *attr, pid_t pid, int cpu, int group_fd, unsigned long flags);
 
 // recvmmsg
+// int recvmmsg(int sockfd, struct mmsghdr *msgvec, unsigned int vlen, int flags, struct timespec *timeout);
 
 // fanotify_init
+// int fanotify_init(unsigned int flags, unsigned int event_f_flags);
 
 // fanotify_mark
+// int fanotify_mark(int fanotify_fd, unsigned int flags, uint64_t mask, int dirfd, const char *_Nullable pathname);
 
 // prlimit64
 // int prlimit(pid_t pid, int resource, const struct rlimit *_Nullable new_limit, struct rlimit *_Nullable old_limit);
 
 // name_to_handle_at
+// int name_to_handle_at(int dirfd, const char *pathname, struct file_handle *handle, int *mount_id, int flags);
 
 // open_by_handle_at
+// int open_by_handle_at(int mount_fd, struct file_handle *handle, int flags);
 
 // clock_adjtime
 // int clock_adjtime(clockid_t clk_id, struct timex *buf);
@@ -918,47 +939,64 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int syncfs(int fd);
 
 // sendmmsg
+// int sendmmsg(int sockfd, struct mmsghdr *msgvec, unsigned int vlen, int flags);
 
 // setns
+// int setns(int fd, int nstype);
 
 // getcpu
+// int getcpu(unsigned int *_Nullable cpu, unsigned int *_Nullable node);
 
 // process_vm_readv
+// ssize_t process_vm_readv(pid_t pid, const struct iovec *local_iov, unsigned long liovcnt, const struct iovec *remote_iov, unsigned long riovcnt, unsigned long flags);
 
 // process_vm_writev
+// ssize_t process_vm_writev(pid_t pid, const struct iovec *local_iov, unsigned long liovcnt, const struct iovec *remote_iov, unsigned long riovcnt, unsigned long flags);
 
 // kcmp
+// int syscall(SYS_kcmp, pid_t pid1, pid_t pid2, int type, unsigned long idx1, unsigned long idx2);
 
 // finit_module
 // int syscall(SYS_finit_module, int fd, const char *param_values, int flags);
 
 // sched_setattr
+// int syscall(SYS_sched_setattr, pid_t pid, struct sched_attr *attr, unsigned int flags);
 
 // sched_getattr
+// int syscall(SYS_sched_getattr, pid_t pid, struct sched_attr *attr, unsigned int size, unsigned int flags);
 
 // renameat2
 // int renameat2(int olddirfd, const char *oldpath, int newdirfd, const char *newpath, unsigned int flags);
 
 // seccomp
+// int syscall(SYS_seccomp, unsigned int operation, unsigned int flags, void *args);
 
 // getrandom
+// ssize_t getrandom(void buf[.buflen], size_t buflen, unsigned int flags);
 
 // memfd_create
+// int memfd_create(const char *name, unsigned int flags);
 
 // kexec_file_load
+// long syscall(SYS_kexec_file_load, int kernel_fd, int initrd_fd, unsigned long cmdline_len, const char *cmdline, unsigned long flags);
 
 // bpf
+// int bpf(int cmd, union bpf_attr *attr, unsigned int size);
 
 // execveat
+// int execveat(int dirfd, const char *pathname, char *const _Nullable argv[], char *const _Nullable envp[], int flags);
 
 // userfaultfd
+// int syscall(SYS_userfaultfd, int flags);
 
 // membarrier
+// int syscall(SYS_membarrier, int cmd, unsigned int flags, int cpu_id);
 
 // mlock2
 // int mlock2(const void addr[.len], size_t len, unsigned int flags);
 
 // copy_file_range
+// ssize_t copy_file_range(int fd_in, off_t *_Nullable off_in, int fd_out, off_t *_Nullable off_out, size_t len, unsigned int flags);
 
 // preadv2
 // ssize_t preadv2(int fd, const struct iovec *iov, int iovcnt, off_t offset, int flags);
@@ -970,16 +1008,20 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int pkey_mprotect(void addr[.len], size_t len, int prot, int pkey);
 
 // pkey_alloc
+// int pkey_alloc(unsigned int flags, unsigned int access_rights);
 
 // pkey_free
+// int pkey_free(int pkey);
 
 // statx
+// int statx(int dirfd, const char *restrict pathname, int flags, unsigned int mask, struct statx *restrict statxbuf);
 
 // io_pgetevents
 
 // rseq
 
 // pidfd_send_signal
+// int syscall(SYS_pidfd_send_signal, int pidfd, int sig, siginfo_t *_Nullable info, unsigned int flags);
 
 // io_uring_setup
 
@@ -1000,34 +1042,45 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // fspick
 
 // pidfd_open
+// int syscall(SYS_pidfd_open, pid_t pid, unsigned int flags);
 
 // clone3
+// long syscall(SYS_clone3, struct clone_args *cl_args, size_t size);
 
 // close_range
+// int close_range(unsigned int first, unsigned int last, int flags);
 
 // openat2
 // int openat2(int dirfd, const char *pathname, const struct open_how *how, size_t size);
 
 // pidfd_getfd
+// int syscall(SYS_pidfd_getfd, int pidfd, int targetfd, unsigned int flags);
 
 // faccessat2
+// int syscall(SYS_faccessat2, int dirfd, const char *pathname, int mode, int flags);
 
 // process_madvise
+// ssize_t process_madvise(int pidfd, const struct iovec iovec[.n], size_t n, int advice, unsigned int flags);
 
 // epoll_pwait2
 // int epoll_pwait2(int epfd, struct epoll_event *events, int maxevents, const struct timespec *_Nullable timeout, const sigset_t *_Nullable sigmask);
 
 // mount_setattr
+// int syscall(SYS_mount_setattr, int dirfd, const char *pathname, unsigned int flags, struct mount_attr *attr, size_t size);
 
 // quotactl_fd
 
 // landlock_create_ruleset
+// int syscall(SYS_landlock_create_ruleset, const struct landlock_ruleset_attr *attr, size_t size , uint32_t flags);
 
 // landlock_add_rule
+// int syscall(SYS_landlock_add_rule, int ruleset_fd, enum landlock_rule_type rule_type, const void *rule_attr, uint32_t flags);
 
 // landlock_restrict_self
+// int syscall(SYS_landlock_restrict_self, int ruleset_fd, uint32_t flags);
 
 // memfd_secret
+// int syscall(SYS_memfd_secret, unsigned int flags);
 
 // process_mrelease
 
