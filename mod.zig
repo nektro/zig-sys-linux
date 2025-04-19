@@ -570,16 +570,6 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // nfsservctl
 // long nfsservctl(int cmd, struct nfsctl_arg *argp, union nfsctl_res *resp);
 
-// getpmsg
-
-// putpmsg
-
-// afs_syscall
-
-// tuxcall
-
-// security
-
 // gettid
 // pid_t gettid(void);
 
@@ -723,8 +713,6 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 
 // utimes
 // int utimes(const char *filename, const struct timeval times[_Nullable 2]);
-
-// vserver
 
 // mbind
 // long mbind(void addr[.len], unsigned long len, int mode, const unsigned long nodemask[(.maxnode + ULONG_WIDTH - 1) / ULONG_WIDTH], unsigned long maxnode, unsigned int flags);
