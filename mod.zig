@@ -677,8 +677,6 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // set_tid_address
 // pid_t syscall(SYS_set_tid_address, int *tidptr);
 
-// restart_syscall
-
 // semtimedop
 // int semtimedop(int semid, struct sembuf *sops, size_t nsops, const struct timespec *_Nullable timeout);
 
