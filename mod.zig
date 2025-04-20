@@ -9,6 +9,7 @@ const syscall4 = sys.syscall4;
 const syscall5 = sys.syscall5;
 const syscall6 = sys.syscall6;
 const pid_t = sys.pid_t;
+const uid_t = sys.uid_t;
 
 fn _errno(rc: usize) enum(c_ushort) { ok, _ } {
     const signed: isize = @bitCast(rc);
@@ -571,7 +572,13 @@ pub const ptrace = @compileError("TODO: ptrace");
 // getuid
 // uid_t getuid(void);
 // asmlinkage long sys_getuid(void);
-pub const getuid = @compileError("TODO: getuid");
+pub fn getuid() errno.Error!uid_t {
+    const r = syscall0(.getuid);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // syslog
 // int syscall(SYS_syslog, int type, char *bufp, int len);
