@@ -658,6 +658,8 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // asmlinkage long sys_prctl(int option, unsigned long arg2, unsigned long arg3, unsigned long arg4, unsigned long arg5);
 
 // arch_prctl
+//
+// asmlinkage long sys_arch_prctl(int option, unsigned long arg2)
 
 // adjtimex
 // int adjtimex(struct timex *buf);
