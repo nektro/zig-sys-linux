@@ -10,4 +10,5 @@ test {
     _ = &linux.sched_yield;
     _ = &linux.pause;
     _ = &linux.getpid;
+    _ = &linux.fork;
 }

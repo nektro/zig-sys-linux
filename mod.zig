@@ -334,7 +334,13 @@ pub const clone = @compileError("TODO: clone");
 // fork
 // pid_t fork(void);
 // asmlinkage long sys_fork(void);
-pub const fork = @compileError("TODO: fork");
+pub fn fork() errno.Error!pid_t {
+    const r = syscall0(.fork);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // vfork
 // pid_t vfork(void);
