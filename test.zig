@@ -20,4 +20,5 @@ test {
     _ = &linux.getpgrp;
     _ = &linux.setsid;
     _ = &linux.munlockall;
+    _ = &linux.vhangup;
 }

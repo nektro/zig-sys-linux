@@ -876,7 +876,13 @@ pub fn munlockall() errno.Error!c_int {
 // vhangup
 // int vhangup(void);
 // asmlinkage long sys_vhangup(void);
-pub const vhangup = @compileError("TODO: vhangup");
+pub fn vhangup() errno.Error!c_int {
+    const r = syscall0(.vhangup);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // pivot_root
 // int syscall(SYS_pivot_root, const char *new_root, const char *put_old);
