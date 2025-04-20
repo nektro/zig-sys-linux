@@ -21,4 +21,5 @@ test {
     _ = &linux.setsid;
     _ = &linux.munlockall;
     _ = &linux.vhangup;
+    _ = &linux.sync;
 }

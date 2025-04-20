@@ -917,7 +917,13 @@ pub const chroot = @compileError("TODO: chroot");
 // sync
 // void sync(void);
 // asmlinkage long sys_sync(void);
-pub const sync = @compileError("TODO: sync");
+pub fn sync() errno.Error!void {
+    const r = syscall0(.sync);
+    return switch (_errno(r)) {
+        .ok => {},
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // acct
 // int acct(const char *_Nullable filename);
