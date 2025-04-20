@@ -9,4 +9,5 @@ test {
     _ = &linux.write;
     _ = &linux.sched_yield;
     _ = &linux.pause;
+    _ = &linux.getpid;
 }

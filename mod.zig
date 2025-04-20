@@ -8,6 +8,7 @@ const syscall3 = sys.syscall3;
 const syscall4 = sys.syscall4;
 const syscall5 = sys.syscall5;
 const syscall6 = sys.syscall6;
+const pid_t = sys.pid_t;
 
 fn _errno(rc: usize) enum(c_ushort) { ok, _ } {
     const signed: isize = @bitCast(rc);
@@ -237,7 +238,13 @@ pub const setitimer = @compileError("TODO: setitimer");
 // getpid
 // pid_t getpid(void);
 // asmlinkage long sys_getpid(void);
-pub const getpid = @compileError("TODO: getpid");
+pub fn getpid() errno.Error!pid_t {
+    const r = syscall0(.getpid);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // sendfile
 // ssize_t sendfile(int out_fd, int in_fd, off_t *_Nullable offset, size_t count);
