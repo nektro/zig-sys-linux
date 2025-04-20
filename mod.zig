@@ -649,10 +649,6 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int syscall(SYS_pivot_root, const char *new_root, const char *put_old);
 // asmlinkage long sys_pivot_root(const char __user *new_root, const char __user *put_old);
 
-// _sysctl
-// [[deprecated]] int _sysctl(struct __sysctl_args *args);
-// asmlinkage long sys_ni_syscall(void);
-
 // prctl
 // int prctl(int op, ... /* unsigned long arg2, unsigned long arg3, unsigned long arg4, unsigned long arg5 */ );
 // asmlinkage long sys_prctl(int option, unsigned long arg2, unsigned long arg3, unsigned long arg4, unsigned long arg5);
@@ -712,10 +708,6 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // setdomainname
 // int setdomainname(const char *name, size_t len);
 // asmlinkage long sys_setdomainname(char __user *name, int len);
-
-// iopl
-// [[deprecated]] int iopl(int level);
-// asmlinkage long sys_ni_syscall(void);
 
 // ioperm
 // int ioperm(unsigned long from, unsigned long num, int turn_on);
