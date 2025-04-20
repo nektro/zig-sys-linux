@@ -19,4 +19,5 @@ test {
     _ = &linux.getppid;
     _ = &linux.getpgrp;
     _ = &linux.setsid;
+    _ = &linux.munlockall;
 }

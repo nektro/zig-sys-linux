@@ -865,7 +865,13 @@ pub const mlockall = @compileError("TODO: mlockall");
 // munlockall
 // int munlockall(void);
 // asmlinkage long sys_munlockall(void);
-pub const munlockall = @compileError("TODO: munlockall");
+pub fn munlockall() errno.Error!c_int {
+    const r = syscall0(.munlockall);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // vhangup
 // int vhangup(void);
