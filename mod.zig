@@ -621,7 +621,13 @@ pub fn geteuid() errno.Error!uid_t {
 // getegid
 // gid_t getegid(void);
 // asmlinkage long sys_getegid(void);
-pub const getegid = @compileError("TODO: getegid");
+pub fn getegid() errno.Error!gid_t {
+    const r = syscall0(.getegid);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // setpgid
 // int setpgid(pid_t pid, pid_t pgid);
