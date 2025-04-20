@@ -11,4 +11,5 @@ test {
     _ = &linux.pause;
     _ = &linux.getpid;
     _ = &linux.fork;
+    _ = &linux.vfork;
 }

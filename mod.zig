@@ -345,7 +345,13 @@ pub fn fork() errno.Error!pid_t {
 // vfork
 // pid_t vfork(void);
 // asmlinkage long sys_vfork(void);
-pub const vfork = @compileError("TODO: vfork");
+pub fn vfork() errno.Error!pid_t {
+    const r = syscall0(.vfork);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // execve
 // int execve(const char *pathname, char *const _Nullable argv[], char *const _Nullable envp[]);
