@@ -637,7 +637,13 @@ pub const setpgid = @compileError("TODO: setpgid");
 // getppid
 // pid_t getppid(void);
 // asmlinkage long sys_getppid(void);
-pub const getppid = @compileError("TODO: getppid");
+pub fn getppid() errno.Error!pid_t {
+    const r = syscall0(.getppid);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // getpgrp
 // pid_t getpgrp(void);

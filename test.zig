@@ -16,4 +16,5 @@ test {
     _ = &linux.getgid;
     _ = &linux.geteuid;
     _ = &linux.getegid;
+    _ = &linux.getppid;
 }
