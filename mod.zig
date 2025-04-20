@@ -19,10 +19,10 @@ fn _errno(rc: usize) enum(c_ushort) { ok, _ } {
 // ssize_t read(int fd, void buf[.count], size_t count);
 // asmlinkage long sys_read(unsigned int fd, char __user *buf, size_t count);
 pub fn read(fd: c_int, buf: []u8) errno.Error!usize {
-    const r = syscall3(.read, fd, buf.ptr, buf.len);
+    const r = syscall3(.read, @intCast(fd), @intFromPtr(buf.ptr), buf.len);
     return switch (_errno(r)) {
         .ok => @intCast(r),
-        _ => |c| errno.errorFromInt(c),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
     };
 }
 
@@ -30,10 +30,10 @@ pub fn read(fd: c_int, buf: []u8) errno.Error!usize {
 // ssize_t write(int fd, const void buf[.count], size_t count);
 // asmlinkage long sys_write(unsigned int fd, const char __user *buf, size_t count);
 pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
-    const r = syscall3(.write, fd, buf.ptr, buf.len);
+    const r = syscall3(.write, @intCast(fd), @intFromPtr(buf.ptr), buf.len);
     return switch (_errno(r)) {
         .ok => @intCast(r),
-        _ => |c| errno.errorFromInt(c),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
     };
 }
 
