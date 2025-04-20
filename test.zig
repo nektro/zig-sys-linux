@@ -22,4 +22,5 @@ test {
     _ = &linux.munlockall;
     _ = &linux.vhangup;
     _ = &linux.sync;
+    _ = &linux.gettid;
 }

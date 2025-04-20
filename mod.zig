@@ -993,7 +993,13 @@ pub const quotactl = @compileError("TODO: quotactl");
 // gettid
 // pid_t gettid(void);
 // asmlinkage long sys_gettid(void);
-pub const gettid = @compileError("TODO: gettid");
+pub fn gettid() errno.Error!pid_t {
+    const r = syscall0(.gettid);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // readahead
 // ssize_t readahead(int fd, off_t offset, size_t count);
