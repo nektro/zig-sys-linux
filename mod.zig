@@ -206,7 +206,13 @@ pub const dup2 = @compileError("TODO: dup2");
 // pause
 // int pause(void);
 // asmlinkage long sys_pause(void);
-pub const pause = @compileError("TODO: pause");
+pub fn pause() errno.Error!c_int {
+    const r = syscall0(.pause);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // nanosleep
 // int nanosleep(const struct timespec *duration, struct timespec *_Nullable rem);

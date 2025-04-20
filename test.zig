@@ -8,4 +8,5 @@ test {
     _ = &linux.read;
     _ = &linux.write;
     _ = &linux.sched_yield;
+    _ = &linux.pause;
 }
