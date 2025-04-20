@@ -645,9 +645,6 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int vhangup(void);
 // asmlinkage long sys_vhangup(void);
 
-// modify_ldt
-// int syscall(SYS_modify_ldt, int func, void ptr[.bytecount], unsigned long bytecount);
-
 // pivot_root
 // int syscall(SYS_pivot_root, const char *new_root, const char *put_old);
 // asmlinkage long sys_pivot_root(const char __user *new_root, const char __user *put_old);
@@ -722,9 +719,6 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int ioperm(unsigned long from, unsigned long num, int turn_on);
 // asmlinkage long sys_ioperm(unsigned long from, unsigned long num, int on);
 
-// create_module
-// [[deprecated]] caddr_t create_module(const char *name, size_t size);
-
 // init_module
 // int syscall(SYS_init_module, void module_image[.len], unsigned long len, const char *param_values);
 // asmlinkage long sys_init_module(void __user *umod, unsigned long len, const char __user *uargs);
@@ -733,18 +727,9 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int syscall(SYS_delete_module, const char *name, unsigned int flags);
 // asmlinkage long sys_delete_module(const char __user *name_user, unsigned int flags);
 
-// get_kernel_syms
-// [[deprecated]] int get_kernel_syms(struct kernel_sym *table);
-
-// query_module
-// [[deprecated]] int query_module(const char *name, int which, void buf[.bufsize], size_t bufsize, size_t *ret);
-
 // quotactl
 // int quotactl(int op, const char *_Nullable special, int id, caddr_t addr);
 // asmlinkage long sys_quotactl(unsigned int cmd, const char __user *special, qid_t id, void __user *addr);
-
-// nfsservctl
-// long nfsservctl(int cmd, struct nfsctl_arg *argp, union nfsctl_res *resp);
 
 // gettid
 // pid_t gettid(void);
@@ -822,8 +807,6 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask);
 // asmlinkage long sys_sched_getaffinity(pid_t pid, unsigned int len, unsigned long __user *user_mask_ptr);
 
-// set_thread_area
-
 // io_setup
 // long io_setup(unsigned int nr_events, aio_context_t *ctx_idp);
 // asmlinkage long sys_io_setup(unsigned nr_reqs, aio_context_t __user *ctx);
@@ -844,20 +827,9 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 // int syscall(SYS_io_cancel, aio_context_t ctx_id, struct iocb *iocb, struct io_event *result);
 // asmlinkage long sys_io_cancel(aio_context_t ctx_id, struct iocb __user *iocb, struct io_event __user *result);
 
-// get_thread_area
-
-// lookup_dcookie
-// int syscall(SYS_lookup_dcookie, uint64_t cookie, char *buffer, size_t len);
-
 // epoll_create
 // int epoll_create(int size);
 // asmlinkage long sys_epoll_create(int size);
-
-// epoll_ctl_old
-// int epoll_ctl(int epfd, int op, int fd, struct epoll_event *_Nullable event);
-
-// epoll_wait_old
-// int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
 
 // remap_file_pages
 // [[deprecated]] int remap_file_pages(void addr[.size], size_t size, int prot, size_t pgoff, int flags);
@@ -1193,6 +1165,7 @@ pub fn write(fd: c_int, buf: []const u8) errno.Error!usize {
 
 // fanotify_mark
 // int fanotify_mark(int fanotify_fd, unsigned int flags, uint64_t mask, int dirfd, const char *_Nullable pathname);
+// asmlinkage long sys_fanotify_mark(int fanotify_fd, unsigned int flags, u64 mask, int fd, const char  __user *pathname);
 
 // prlimit64
 // int prlimit(pid_t pid, int resource, const struct rlimit *_Nullable new_limit, struct rlimit *_Nullable old_limit);
