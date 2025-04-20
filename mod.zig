@@ -1,4 +1,5 @@
 const std = @import("std");
+const errno = @import("errno");
 const sys = std.os.linux;
 const syscall0 = sys.syscall0;
 const syscall1 = sys.syscall1;
@@ -7,7 +8,6 @@ const syscall3 = sys.syscall3;
 const syscall4 = sys.syscall4;
 const syscall5 = sys.syscall5;
 const syscall6 = sys.syscall6;
-const errno = @import("errno");
 
 fn _errno(rc: usize) enum(c_ushort) { ok, _ } {
     const signed: isize = @bitCast(rc);
