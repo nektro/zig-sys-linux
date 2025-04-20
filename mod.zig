@@ -150,7 +150,13 @@ pub const select = @compileError("TODO: select");
 // sched_yield
 // int sched_yield(void);
 // asmlinkage long sys_sched_yield(void);
-pub const sched_yield = @compileError("TODO: sched_yield");
+pub fn sched_yield() errno.Error!c_int {
+    const r = syscall0(.sched_yield);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // mremap
 // void *mremap(void old_address[.old_size], size_t old_size, size_t new_size, int flags, ... /* void *new_address */);
