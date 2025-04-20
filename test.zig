@@ -23,4 +23,5 @@ test {
     _ = &linux.vhangup;
     _ = &linux.sync;
     _ = &linux.gettid;
+    _ = &linux.inotify_init;
 }

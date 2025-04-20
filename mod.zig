@@ -1299,7 +1299,13 @@ pub const ioprio_get = @compileError("TODO: ioprio_get");
 // inotify_init
 // int inotify_init(void);
 // asmlinkage long sys_inotify_init(void);
-pub const inotify_init = @compileError("TODO: inotify_init");
+pub fn inotify_init() errno.Error!c_int {
+    const r = syscall0(.inotify_init);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // inotify_add_watch
 // int inotify_add_watch(int fd, const char *pathname, uint32_t mask);
