@@ -659,7 +659,13 @@ pub fn getpgrp() errno.Error!pid_t {
 // setsid
 // pid_t setsid(void);
 // asmlinkage long sys_setsid(void);
-pub const setsid = @compileError("TODO: setsid");
+pub fn setsid() errno.Error!pid_t {
+    const r = syscall0(.setsid);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // setreuid
 // int setreuid(uid_t ruid, uid_t euid);

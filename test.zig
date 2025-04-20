@@ -18,4 +18,5 @@ test {
     _ = &linux.getegid;
     _ = &linux.getppid;
     _ = &linux.getpgrp;
+    _ = &linux.setsid;
 }
