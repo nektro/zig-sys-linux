@@ -10,6 +10,7 @@ const syscall5 = sys.syscall5;
 const syscall6 = sys.syscall6;
 const pid_t = sys.pid_t;
 const uid_t = sys.uid_t;
+const gid_t = sys.gid_t;
 
 fn _errno(rc: usize) enum(c_ushort) { ok, _ } {
     const signed: isize = @bitCast(rc);
@@ -588,7 +589,13 @@ pub const syslog = @compileError("TODO: syslog");
 // getgid
 // gid_t getgid(void);
 // asmlinkage long sys_getgid(void);
-pub const getgid = @compileError("TODO: getgid");
+pub fn getgid() errno.Error!gid_t {
+    const r = syscall0(.getgid);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // setuid
 // int setuid(uid_t uid);

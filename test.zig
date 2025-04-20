@@ -13,4 +13,5 @@ test {
     _ = &linux.fork;
     _ = &linux.vfork;
     _ = &linux.getuid;
+    _ = &linux.getgid;
 }
