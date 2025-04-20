@@ -648,7 +648,13 @@ pub fn getppid() errno.Error!pid_t {
 // getpgrp
 // pid_t getpgrp(void);
 // asmlinkage long sys_getpgrp(void);
-pub const getpgrp = @compileError("TODO: getpgrp");
+pub fn getpgrp() errno.Error!pid_t {
+    const r = syscall0(.getpgrp);
+    return switch (_errno(r)) {
+        .ok => @intCast(r),
+        _ => |c| errno.errorFromInt(@intFromEnum(c)),
+    };
+}
 
 // setsid
 // pid_t setsid(void);
