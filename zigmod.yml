@@ -6,7 +6,7 @@ description: OS bindings layer for directly making Linux syscalls
 dependencies:
   - src: git https://github.com/nektro/zig-errno
 
-root_dependencies:
-  - src: git https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-    license: GPL-2.0-only
-    keep: true
+# root_dependencies:
+#   - src: git https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+#     license: GPL-2.0-only
+#     keep: true
