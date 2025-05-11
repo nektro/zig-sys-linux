@@ -2,7 +2,3 @@ MIT:
 = https://spdx.org/licenses/MIT
 - This
 - git https://github.com/nektro/zig-errno
-
-GPL-2.0-only:
-= https://spdx.org/licenses/GPL-2.0-only
-- git https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
