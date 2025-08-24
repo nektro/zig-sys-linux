@@ -8,9 +8,10 @@ const syscall3 = sys.syscall3;
 const syscall4 = sys.syscall4;
 const syscall5 = sys.syscall5;
 const syscall6 = sys.syscall6;
-const pid_t = sys.pid_t;
-const uid_t = sys.uid_t;
-const gid_t = sys.gid_t;
+
+pub const pid_t = sys.pid_t;
+pub const uid_t = sys.uid_t;
+pub const gid_t = sys.gid_t;
 
 fn _errno(rc: usize) enum(c_ushort) { ok, _ } {
     const signed: isize = @bitCast(rc);
