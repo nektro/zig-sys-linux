@@ -241,12 +241,8 @@ pub const setitimer = @compileError("TODO: setitimer");
 // getpid
 // pid_t getpid(void);
 // asmlinkage long sys_getpid(void);
-pub fn getpid() errno.Error!pid_t {
-    const r = syscall0(.getpid);
-    return switch (_errno(r)) {
-        .ok => @intCast(r),
-        _ => |c| errno.errorFromInt(@intFromEnum(c)),
-    };
+pub fn getpid() pid_t {
+    return @intCast(syscall0(.getpid));
 }
 
 // sendfile
@@ -994,12 +990,8 @@ pub const quotactl = @compileError("TODO: quotactl");
 // gettid
 // pid_t gettid(void);
 // asmlinkage long sys_gettid(void);
-pub fn gettid() errno.Error!pid_t {
-    const r = syscall0(.gettid);
-    return switch (_errno(r)) {
-        .ok => @intCast(r),
-        _ => |c| errno.errorFromInt(@intFromEnum(c)),
-    };
+pub fn gettid() pid_t {
+    return @intCast(syscall0(.gettid));
 }
 
 // readahead
