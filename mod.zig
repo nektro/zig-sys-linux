@@ -1,5 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
+const linux = std.os.linux;
 
 pub const errno = struct {
     pub const Error = error{
@@ -924,5 +925,197 @@ pub const errno = struct {
 };
 
 pub const libc = struct {
+    /// int close(int fildes);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/close.html
+    pub extern fn close(fildes: c_int) c_int;
+
+    /// void exit(int status);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/exit.html
+    pub extern fn exit(status: c_int) noreturn;
+
+    /// char *getenv(const char *name);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getenv.html
+    pub extern fn getenv(name: [*:0]const u8) ?[*:0]u8;
+    /// pid_t getpid(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getpid.html
+    pub extern fn getpid() pid_t;
+    /// pthread_t pthread_self(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_self.html
+    pub extern fn pthread_self() pthread_t;
+    /// int fstat(int fildes, struct stat *buf);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fstat.html
+    pub extern fn fstat(fd: c_int, buf: *struct_stat) c_int;
+    /// int mkdirat(int fd, const char *path, mode_t mode);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/mkdirat.html
+    pub extern fn mkdirat(fd: c_int, path: [*:0]const u8, mode: mode_t) c_int;
+    /// ssize_t readv(int fildes, const struct iovec *iov, int iovcnt);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/readv.html
+    pub extern fn readv(fd: c_int, iovec: [*]const struct_iovec, count: c_int) isize;
+    /// ssize_t read(int fildes, void *buf, size_t nbyte);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/read.html
+    pub extern fn read(fd: c_int, buf: [*]u8, count: usize) isize;
+    /// int openat(int fd, const char *path, int oflag, ...);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/openat.html
+    pub extern fn openat(fd: c_int, file: [*:0]const u8, oflag: c_int, ...) c_int;
+    /// int fstat(int fildes, struct stat *buf);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fstat.html
+    pub extern fn fstat(fd: c_int, buf: *struct_stat) c_int;
+
+
+
+
+
+
+
+
+
+
+    //
+    //
+
     pub extern fn __errno_location() *c_int;
 };
+
+pub const clock_t = c_long;
+pub const pid_t = c_int;
+pub const gid_t = c_uint;
+pub const uid_t = c_uint;
+pub const struct_group = opaque {};
+pub const struct_hostent = opaque {};
+pub const struct_netent = opaque {};
+pub const struct_protoent = opaque {};
+pub const struct_passwd = opaque {};
+pub const struct_servent = opaque {};
+pub const struct_utmpx = opaque {};
+pub const wint_t = c_uint;
+pub const struct_if_nameindex = opaque {};
+pub const struct_lconv = opaque {};
+pub const pthread_t = c_ulong;
+pub const FILE = opaque {};
+pub const locale_t = *const opaque {};
+pub const nl_catd = *const opaque {};
+pub const intmax_t = i64;
+pub const wchar_t = c_int;
+pub const mode_t = c_uint;
+pub const struct_sockaddr = linux.sockaddr;
+pub const socklen_t = c_uint;
+pub const clockid_t = c_int;
+pub const struct_timespec = linux.timespec;
+pub const DIR = opaque {};
+pub const time_t = i64;
+pub const div_t = extern struct { quot: c_int, rem: c_int };
+pub const off_t = linux.off_t;
+pub const ino_t = linux.ino_t;
+pub const struct_stat = linux.Stat;
+pub const struct_iovec = extern struct { base: [*]u8, len: usize };
+
+pub const AT = struct {
+    pub const FDCWD = -100;
+    pub const SYMLINK_NOFOLLOW = 0x100;
+    pub const REMOVEDIR = 0x200;
+    pub const SYMLINK_FOLLOW = 0x400;
+    pub const EACCESS = 0x200;
+};
+
+pub const O = struct {
+    pub usingnamespace switch (builtin.target.cpu.arch) {
+        .x86_64,
+        => struct {
+            pub const CREAT = 0o100;
+            pub const EXCL = 0o200;
+            pub const NOCTTY = 0o400;
+            pub const TRUNC = 0o1000;
+            pub const APPEND = 0o2000;
+            pub const NONBLOCK = 0o4000;
+            pub const DSYNC = 0o10000;
+            pub const SYNC = 0o4010000;
+            pub const RSYNC = 0o4010000;
+            pub const DIRECTORY = 0o200000;
+            pub const NOFOLLOW = 0o400000;
+            pub const CLOEXEC = 0o2000000;
+            pub const ASYNC = 0o20000;
+            pub const DIRECT = 0o40000;
+            pub const LARGEFILE = 0o100000;
+            pub const NOATIME = 0o1000000;
+            pub const PATH = 0o10000000;
+            pub const TMPFILE = 0o20200000;
+            pub const NDELAY = O.NONBLOCK;
+        },
+        else => @compileError("TODO"),
+    };
+    pub const SEARCH = O.PATH;
+    pub const EXEC = O.PATH;
+    pub const TTY_INIT = 0;
+    pub const ACCMODE = (3 | O.SEARCH);
+    pub const RDONLY = 0;
+    pub const WRONLY = 1;
+    pub const RDWR = 2;
+};
+
+pub const NAME_MAX = 255;
+pub const PATH_MAX = 4096;
+pub const NGROUPS_MAX = 32;
+pub const ARG_MAX = 131072;
+pub const IOV_MAX = 1024;
+pub const SYMLOOP_MAX = 40;
+pub const TZNAME_MAX = 6;
+pub const TTY_NAME_MAX = 32;
+pub const HOST_NAME_MAX = 255;
+
+pub fn getpid() pid_t {
+    return libc.getpid();
+}
+
+pub fn exit(status: c_int) noreturn {
+    return libc.exit(status);
+}
+
+pub fn getenv(name: [:0]const u8) ?[:0]u8 {
+    return std.mem.sliceTo(libc.getenv(name.ptr) orelse return null, 0);
+}
+
+pub fn openat(fd: c_int, file: [*:0]const u8, oflag: c_int) errno.Error!c_int {
+    const rc = libc.openat(fd, file, oflag);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    return rc;
+}
+
+pub fn close(fd: c_int) errno.Error!void {
+    const rc = libc.close(fd);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+
+pub fn read(fd: c_int, buf: []u8) errno.Error!usize {
+    const rc = libc.read(fd, buf.ptr, buf.len);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
+}
+
+pub fn fstat(fd: c_int) errno.Error!struct_stat {
+    var buf: struct_stat = undefined;
+    const rc = libc.fstat(fd, &buf);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+    return buf;
+}
+
+pub fn readv(fd: c_int, bufs: []const struct_iovec) errno.Error!usize {
+    std.debug.assert(bufs.len > 0);
+    std.debug.assert(bufs.len <= IOV_MAX);
+    const rc = libc.readv(fd, bufs.ptr, @intCast(bufs.len));
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
+}
+
+pub fn mkdirat(fd: c_int, path: [*:0]const u8, mode: mode_t) errno.Error!void {
+    const rc = libc.mkdirat(fd, path, mode);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+
+pub fn pthread_self() pthread_t {
+    return libc.pthread_self();
+}
