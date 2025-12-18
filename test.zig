@@ -14,4 +14,5 @@ test {
     _ = &linux.readv;
     _ = &linux.mkdirat;
     _ = &linux.pthread_self;
+    _ = &linux.gettid;
 }

@@ -1388,6 +1388,7 @@ pub const libc = struct {
     //
 
     pub extern fn __errno_location() *c_int;
+    pub extern fn gettid() pid_t;
 };
 
 pub const clock_t = c_long;
@@ -1532,4 +1533,8 @@ pub fn mkdirat(fd: c_int, path: [*:0]const u8, mode: mode_t) errno.Error!void {
 
 pub fn pthread_self() pthread_t {
     return libc.pthread_self();
+}
+
+pub fn gettid() pid_t {
+    return libc.gettid();
 }
