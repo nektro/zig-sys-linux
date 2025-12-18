@@ -933,33 +933,6 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/exit.html
     pub extern fn exit(status: c_int) noreturn;
 
-    /// char *getenv(const char *name);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getenv.html
-    pub extern fn getenv(name: [*:0]const u8) ?[*:0]u8;
-    /// pid_t getpid(void);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getpid.html
-    pub extern fn getpid() pid_t;
-    /// pthread_t pthread_self(void);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_self.html
-    pub extern fn pthread_self() pthread_t;
-    /// int fstat(int fildes, struct stat *buf);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fstat.html
-    pub extern fn fstat(fd: c_int, buf: *struct_stat) c_int;
-    /// int mkdirat(int fd, const char *path, mode_t mode);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/mkdirat.html
-    pub extern fn mkdirat(fd: c_int, path: [*:0]const u8, mode: mode_t) c_int;
-    /// ssize_t readv(int fildes, const struct iovec *iov, int iovcnt);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/readv.html
-    pub extern fn readv(fd: c_int, iovec: [*]const struct_iovec, count: c_int) isize;
-    /// ssize_t read(int fildes, void *buf, size_t nbyte);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/read.html
-    pub extern fn read(fd: c_int, buf: [*]u8, count: usize) isize;
-    /// int openat(int fd, const char *path, int oflag, ...);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/openat.html
-    pub extern fn openat(fd: c_int, file: [*:0]const u8, oflag: c_int, ...) c_int;
-    /// int fstat(int fildes, struct stat *buf);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fstat.html
-    pub extern fn fstat(fd: c_int, buf: *struct_stat) c_int;
 
 
 
