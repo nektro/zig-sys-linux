@@ -4,3 +4,4 @@ main: mod.zig
 license: MIT
 description: OS bindings layer for interacting with Linux
 dependencies:
+  - src: system_lib c
