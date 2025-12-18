@@ -925,13 +925,457 @@ pub const errno = struct {
 };
 
 pub const libc = struct {
+    /// void _Exit(int status);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/_Exit.html
+    pub extern fn _Exit(status: c_int) noreturn;
+
+    /// void _exit(int status);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/_exit.html
+    pub extern fn _exit(status: c_int) noreturn;
+
+    /// long a64l(const char *s);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/a64l.html
+    pub extern fn a64l(s: [*]const u8) c_long;
+
+    /// void abort(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/abort.html
+    pub extern fn abort() void;
+
+    /// int abs(int i);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/abs.html
+    pub extern fn abs(i: c_int) c_int;
+
+    /// int accept(int socket, struct sockaddr *restrict address, socklen_t *restrict address_len);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/accept.html
+    pub extern fn accept(socket: c_int, noalias address: ?*struct_sockaddr, noalias address_len: *socklen_t) c_int;
+
+    /// int access(const char *path, int amode);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/access.html
+    pub extern fn access(path: [*:0]const u8, amode: c_int) c_int;
+
+    /// double acos(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/acos.html
+    pub extern fn acos(x: f64) f64;
+
+    /// float acosf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/acosf.html
+    pub extern fn acosf(x: f32) f32;
+
+    /// double acosh(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/acosh.html
+    pub extern fn acosh(x: f64) f64;
+
+    /// float acoshf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/acoshf.html
+    pub extern fn acoshf(x: f32) f32;
+
+    /// long double acoshl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/acoshl.html
+    pub extern fn acoshl(x: c_longdouble) c_longdouble;
+
+    /// long double acosl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/acosl.html
+    pub extern fn acosl(x: c_longdouble) c_longdouble;
+
+    /// double asin(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/asin.html
+    pub extern fn asin(x: f64) f64;
+
+    /// float asinf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/asinf.html
+    pub extern fn asinf(x: f32) f32;
+
+    /// double asinh(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/asinh.html
+    pub extern fn asinh(x: f64) f64;
+
+    /// float asinhf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/asinhf.html
+    pub extern fn asinhf(x: f32) f32;
+
+    /// long double asinhl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/asinhl.html
+    pub extern fn asinhl(x: c_longdouble) c_longdouble;
+
+    /// long double asinl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/asinl.html
+    pub extern fn asinl(x: c_longdouble) c_longdouble;
+
+    /// double atan(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atan.html
+    pub extern fn atan(x: f64) f64;
+
+    /// double atan2(double y, double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atan2.html
+    pub extern fn atan2(y: f64, x: f64) f64;
+
+    /// float atan2f(float y, float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atan2f.html
+    pub extern fn atan2f(y: f32, x: f32) f32;
+
+    /// long double atan2l(long double y, long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atan2l.html
+    pub extern fn atan2l(y: c_longdouble, x: c_longdouble) c_longdouble;
+
+    /// float atanf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atanf.html
+    pub extern fn atanf(x: f32) f32;
+
+    /// double atanh(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atanh.html
+    pub extern fn atanh(x: f64) f64;
+
+    /// float atanhf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atanhf.html
+    pub extern fn atanhf(x: f32) f32;
+
+    /// long double atanhl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atanhl.html
+    pub extern fn atanhl(x: c_longdouble) c_longdouble;
+
+    /// long double atanl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atanl.html
+    pub extern fn atanl(x: c_longdouble) c_longdouble;
+
+    /// double cbrt(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/cbrt.html
+    pub extern fn cbrt(x: f64) f64;
+
+    /// float cbrtf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/cbrtf.html
+    pub extern fn cbrtf(x: f32) f32;
+
+    /// long double cbrtl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/cbrtl.html
+    pub extern fn cbrtl(x: c_longdouble) c_longdouble;
+
+    /// double ceil(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/ceil.html
+    pub extern fn ceil(x: f64) f64;
+
+    /// float ceilf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/ceilf.html
+    pub extern fn ceilf(x: f32) f32;
+
+    /// long double ceill(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/ceill.html
+    pub extern fn ceill(x: c_longdouble) c_longdouble;
+
+    /// clock_t clock(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/clock.html
+    pub extern fn clock() clock_t;
+
     /// int close(int fildes);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/close.html
     pub extern fn close(fildes: c_int) c_int;
 
+    /// void closelog(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/closelog.html
+    pub extern fn closelog() void;
+
+    /// double copysign(double x, double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/copysign.html
+    pub extern fn copysign(x: f64, y: f64) f64;
+
+    /// float copysignf(float x, float y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/copysignf.html
+    pub extern fn copysignf(x: f32, y: f32) f32;
+
+    /// long double copysignl(long double x, long double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/copysignl.html
+    pub extern fn copysignl(x: c_longdouble, y: c_longdouble) c_longdouble;
+
+    /// double cos(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/cos.html
+    pub extern fn cos(x: f64) f64;
+
+    /// float cosf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/cosf.html
+    pub extern fn cosf(x: f32) f32;
+
+    /// double cosh(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/cosh.html
+    pub extern fn cosh(x: f64) f64;
+
+    /// float coshf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/coshf.html
+    pub extern fn coshf(x: f32) f32;
+
+    /// long double coshl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/coshl.html
+    pub extern fn coshl(x: c_longdouble) c_longdouble;
+
+    /// long double cosl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/cosl.html
+    pub extern fn cosl(x: c_longdouble) c_longdouble;
+
+    /// div_t div(int numer, int denom);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/div.html
+    pub extern fn div(numer: c_int, denom: c_int) div_t;
+
+    /// double drand48(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/drand48.html
+    pub extern fn drand48() f64;
+
+    /// int dup(int fildes);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/dup.html
+    pub extern fn dup(fildes: c_int) c_int;
+
+    /// int dup2(int fildes, int fildes2);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/dup2.html
+    pub extern fn dup2(fildes: c_int, fildes2: c_int) c_int;
+
+    /// void endgrent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/endgrent.html
+    pub extern fn endgrent() void;
+
+    /// void endhostent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/endhostent.html
+    pub extern fn endhostent() void;
+
+    /// void endnetent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/endnetent.html
+    pub extern fn endnetent() void;
+
+    /// void endprotoent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/endprotoent.html
+    pub extern fn endprotoent() void;
+
+    /// void endpwent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/endpwent.html
+    pub extern fn endpwent() void;
+
+    /// void endservent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/endservent.html
+    pub extern fn endservent() void;
+
+    /// void endutxent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/endutxent.html
+    pub extern fn endutxent() void;
+
+    /// double erf(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erf.html
+    pub extern fn erf(x: f64) f64;
+
+    /// double erfc(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erfc.html
+    pub extern fn erfc(x: f64) f64;
+
+    /// float erfcf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erfcf.html
+    pub extern fn erfcf(x: f32) f32;
+
+    /// long double erfcl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erfcl.html
+    pub extern fn erfcl(x: c_longdouble) c_longdouble;
+
+    /// float erff(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erff.html
+    pub extern fn erff(x: f32) f32;
+
+    /// long double erfl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erfl.html
+    pub extern fn erfl(x: c_longdouble) c_longdouble;
+
     /// void exit(int status);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/exit.html
     pub extern fn exit(status: c_int) noreturn;
+
+    /// double exp(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/exp.html
+    pub extern fn exp(x: f64) f64;
+
+    /// double exp2(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/exp2.html
+    pub extern fn exp2(x: f64) f64;
+
+    /// float exp2f(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/exp2f.html
+    pub extern fn exp2f(x: f32) f32;
+
+    /// long double exp2l(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/exp2l.html
+    pub extern fn exp2l(x: c_longdouble) c_longdouble;
+
+    /// float expf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/expf.html
+    pub extern fn expf(x: f32) f32;
+
+    /// long double expl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/expl.html
+    pub extern fn expl(x: c_longdouble) c_longdouble;
+
+    /// double expm1(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/expm1.html
+    pub extern fn expm1(x: f64) f64;
+
+    /// float expm1f(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/expm1f.html
+    pub extern fn expm1f(x: f32) f32;
+
+    /// long double expm1l(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/expm1l.html
+    pub extern fn expm1l(x: c_longdouble) c_longdouble;
+
+    /// double fabs(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fabs.html
+    pub extern fn fabs(x: f64) f64;
+
+    /// float fabsf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fabsf.html
+    pub extern fn fabsf(x: f32) f32;
+
+    /// long double fabsl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fabsl.html
+    pub extern fn fabsl(x: c_longdouble) c_longdouble;
+
+    /// int fchdir(int fildes);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fchdir.html
+    pub extern fn fchdir(fildes: c_int) c_int;
+
+    /// int fchmod(int fildes, mode_t mode);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fchmod.html
+    pub extern fn fchmod(fildes: c_int, mode: mode_t) c_int;
+
+    /// int fchown(int fildes, uid_t owner, gid_t group);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fchown.html
+    pub extern fn fchown(fildes: c_int, owner: uid_t, group: gid_t) c_int;
+
+    /// int fdatasync(int fildes);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fdatasync.html
+    pub extern fn fdatasync(fildes: c_int) c_int;
+
+    /// double fdim(double x, double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fdim.html
+    pub extern fn fdim(x: f64, y: f64) f64;
+
+    /// float fdimf(float x, float y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fdimf.html
+    pub extern fn fdimf(x: f32, y: f32) f32;
+
+    /// long double fdiml(long double x, long double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fdiml.html
+    pub extern fn fdiml(x: c_longdouble, y: c_longdouble) c_longdouble;
+
+    /// int fegetround(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fegetround.html
+    pub extern fn fegetround() c_int;
+
+    /// int fesetround(int round);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fesetround.html
+    pub extern fn fesetround(round: c_int) c_int;
+
+    /// int fetestexcept(int excepts);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fetestexcept.html
+    pub extern fn fetestexcept(excepts: c_int) c_int;
+
+    /// int ffs(int i);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/ffs.html
+    pub extern fn ffs(i: c_int) c_int;
+
+    /// double floor(double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/floor.html
+    pub extern fn floor(x: f64) f64;
+
+    /// float floorf(float x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/floorf.html
+    pub extern fn floorf(x: f32) f32;
+
+    /// long double floorl(long double x);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/floorl.html
+    pub extern fn floorl(x: c_longdouble) c_longdouble;
+
+    /// double fmax(double x, double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmax.html
+    pub extern fn fmax(x: f64, y: f64) f64;
+
+    /// float fmaxf(float x, float y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmaxf.html
+    pub extern fn fmaxf(x: f32, y: f32) f32;
+
+    /// long double fmaxl(long double x, long double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmaxl.html
+    pub extern fn fmaxl(x: c_longdouble, y: c_longdouble) c_longdouble;
+
+    /// double fmin(double x, double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmin.html
+    pub extern fn fmin(x: f64, y: f64) f64;
+
+    /// float fminf(float x, float y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fminf.html
+    pub extern fn fminf(x: f32, y: f32) f32;
+
+    /// long double fminl(long double x, long double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fminl.html
+    pub extern fn fminl(x: c_longdouble, y: c_longdouble) c_longdouble;
+
+    /// double fmod(double x, double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmod.html
+    pub extern fn fmod(x: f64, y: f64) f64;
+
+    /// float fmodf(float x, float y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmodf.html
+    pub extern fn fmodf(x: f32, y: f32) f32;
+
+    /// long double fmodl(long double x, long double y);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmodl.html
+    pub extern fn fmodl(x: c_longdouble, y: c_longdouble) c_longdouble;
+
+    /// pid_t fork(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fork.html
+    pub extern fn fork() pid_t;
+
+    /// long fpathconf(int fildes, int name);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fpathconf.html
+    pub extern fn fpathconf(fildes: c_int, name: c_int) c_long;
+
+    /// int getchar(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getchar.html
+    pub extern fn getchar() c_int;
+
+    /// int getchar_unlocked(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getchar_unlocked.html
+    pub extern fn getchar_unlocked() c_int;
+
+    /// gid_t getegid(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getegid.html
+    pub extern fn getegid() gid_t;
+
+    /// uid_t geteuid(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/geteuid.html
+    pub extern fn geteuid() uid_t;
+
+    /// gid_t getgid(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getgid.html
+    pub extern fn getgid() gid_t;
+
+    /// long gethostid(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/gethostid.html
+    pub extern fn gethostid() c_long;
+
+    /// pid_t getpgid(pid_t pid);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getpgid.html
+    pub extern fn getpgid(pid: pid_t) pid_t;
+
+    /// pid_t getpgrp(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getpgrp.html
+    pub extern fn getpgrp() pid_t;
+
+    /// pid_t getpid(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getpid.html
+    pub extern fn getpid() pid_t;
+
+    /// pid_t getppid(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getppid.html
+    pub extern fn getppid() pid_t;
+
+    /// uid_t getuid(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getuid.html
+    pub extern fn getuid() uid_t;
+
+    /// wint_t getwchar(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getwchar.html
+    pub extern fn getwchar() wint_t;
 
 
 
