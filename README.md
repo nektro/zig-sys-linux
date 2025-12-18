@@ -6,4 +6,4 @@
 [![Zig](https://img.shields.io/badge/Zig-0.14-f7a41d)](https://ziglang.org/)
 [![Zigmod](https://img.shields.io/badge/Zigmod-latest-f7a41d)](https://github.com/nektro/zigmod)
 
-OS bindings layer for directly making Linux syscalls. Preserves original errno error values.
+OS bindings layer for interacting with Linux
