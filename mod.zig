@@ -1373,9 +1373,6 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getuid.html
     pub extern fn getuid() uid_t;
 
-    /// wint_t getwchar(void);
-    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getwchar.html
-    pub extern fn getwchar() wint_t;
 
 
 
