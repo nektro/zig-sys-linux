@@ -61,6 +61,7 @@ pub const errno = struct {
         ENOANO,
         EBADRQC,
         EBADSLT,
+        EDEADLOCK,
         EBFONT,
         ENOSTR,
         ENODATA,
