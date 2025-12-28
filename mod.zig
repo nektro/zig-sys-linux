@@ -1342,6 +1342,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getegid.html
     pub extern fn getegid() gid_t;
 
+    /// char *getenv(const char *name);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getenv.html
+    pub extern fn getenv(name: [*:0]const u8) ?[*:0]u8;
+
     /// uid_t geteuid(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/geteuid.html
     pub extern fn geteuid() uid_t;
