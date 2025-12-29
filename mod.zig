@@ -1334,6 +1334,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fstat.html
     pub extern fn fstat(fd: c_int, buf: *struct_stat) c_int;
 
+    /// int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fstatat.html
+    pub extern fn fstatat(fd: c_int, noalias path: [*:0]const u8, noalias buf: *struct_stat, flag: c_int) c_int;
+
     /// int getchar(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getchar.html
     pub extern fn getchar() c_int;
@@ -1642,4 +1646,12 @@ pub fn pthread_self() pthread_t {
 
 pub fn gettid() pid_t {
     return libc.gettid();
+}
+
+pub fn fstatat(fd: c_int, path: [*:0]const u8, flag: c_int) errno.Error!struct_stat {
+    var buf: struct_stat = undefined;
+    const rc = libc.fstatat(fd, path, &buf, flag);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+    return buf;
 }
