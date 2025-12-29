@@ -978,6 +978,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/acosl.html
     pub extern fn acosl(x: c_longdouble) c_longdouble;
 
+    /// unsigned alarm(unsigned seconds);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/alarm.html
+    pub extern fn alarm(seconds: c_uint) c_uint;
+
     /// double asin(double x);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/asin.html
     pub extern fn asin(x: f64) f64;
@@ -1114,6 +1118,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/div.html
     pub extern fn div(numer: c_int, denom: c_int) div_t;
 
+    /// char *dlerror(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/dlerror.html
+    pub extern fn dlerror() ?[*:0]u8;
+
     /// double drand48(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/drand48.html
     pub extern fn drand48() f64;
@@ -1153,6 +1161,10 @@ pub const libc = struct {
     /// void endutxent(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/endutxent.html
     pub extern fn endutxent() void;
+
+    /// double erand48(unsigned short xsubi[3]);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erand48.html
+    pub extern fn erand48(xsubi: *[3]c_ushort) f64;
 
     /// double erf(double x);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erf.html
@@ -1230,6 +1242,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fabsl.html
     pub extern fn fabsl(x: c_longdouble) c_longdouble;
 
+    /// int faccessat(int fd, const char *path, int amode, int flag);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/faccessat.html
+    pub extern fn faccessat(fd: c_int, path: [*:0]const u8, amode: c_int, flag: c_int) c_int;
+
     /// int fchdir(int fildes);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fchdir.html
     pub extern fn fchdir(fildes: c_int) c_int;
@@ -1238,9 +1254,17 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fchmod.html
     pub extern fn fchmod(fildes: c_int, mode: mode_t) c_int;
 
+    /// int fchmodat(int fd, const char *path, mode_t mode, int flag);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fchmodat.html
+    pub extern fn fchmodat(fd: c_int, path: [*:0]const u8, mode: mode_t, flag: c_int) c_int;
+
     /// int fchown(int fildes, uid_t owner, gid_t group);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fchown.html
     pub extern fn fchown(fildes: c_int, owner: uid_t, group: gid_t) c_int;
+
+    /// int fchownat(int fd, const char *path, uid_t owner, gid_t group, int flag);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fchownat.html
+    pub extern fn fchownat(fd: c_int, path: [*:0]const u8, owner: uid_t, group: gid_t, flag: c_int) c_int;
 
     /// int fdatasync(int fildes);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fdatasync.html
@@ -1285,6 +1309,18 @@ pub const libc = struct {
     /// long double floorl(long double x);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/floorl.html
     pub extern fn floorl(x: c_longdouble) c_longdouble;
+
+    /// double fma(double x, double y, double z);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fma.html
+    pub extern fn fma(x: f64, y: f64, z: f64) f64;
+
+    /// float fmaf(float x, float y, float z);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmaf.html
+    pub extern fn fmaf(x: f32, y: f32, z: f32) f32;
+
+    /// long double fmal(long double x, long double y, long double z);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmal.html
+    pub extern fn fmal(x: c_longdouble, y: c_longdouble, z: c_longdouble) c_longdouble;
 
     /// double fmax(double x, double y);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fmax.html
@@ -1362,6 +1398,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getgid.html
     pub extern fn getgid() gid_t;
 
+    /// struct group *getgrent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getgrent.html
+    pub extern fn getgrent() ?*struct_group;
+
     /// long gethostid(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/gethostid.html
     pub extern fn gethostid() c_long;
@@ -1381,6 +1421,22 @@ pub const libc = struct {
     /// pid_t getppid(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getppid.html
     pub extern fn getppid() pid_t;
+
+    /// struct protoent *getprotoent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getprotoent.html
+    pub extern fn getprotoent() ?*struct_protoent;
+
+    /// struct passwd *getpwent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getpwent.html
+    pub extern fn getpwent() ?*struct_passwd;
+
+    /// struct servent *getservent(void);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getservent.html
+    pub extern fn getservent() ?*struct_servent;
+
+    /// pid_t getsid(pid_t pid);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getsid.html
+    pub extern fn getsid(pid: pid_t) pid_t;
 
     /// uid_t getuid(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getuid.html
