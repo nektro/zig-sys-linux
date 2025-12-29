@@ -1330,6 +1330,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fpathconf.html
     pub extern fn fpathconf(fildes: c_int, name: c_int) c_long;
 
+    /// int fstat(int fildes, struct stat *buf);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fstat.html
+    pub extern fn fstat(fd: c_int, buf: *struct_stat) c_int;
+
     /// int getchar(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getchar.html
     pub extern fn getchar() c_int;
@@ -1378,16 +1382,17 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getuid.html
     pub extern fn getuid() uid_t;
 
+    /// int mkdirat(int fd, const char *path, mode_t mode);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/mkdirat.html
+    pub extern fn mkdirat(fd: c_int, path: [*:0]const u8, mode: mode_t) c_int;
 
+    /// int openat(int fd, const char *path, int oflag, ...);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/openat.html
+    pub extern fn openat(fd: c_int, file: [*:0]const u8, oflag: c_int, ...) c_int;
 
-
-
-
-
-
-
-
-
+    /// ssize_t read(int fildes, void *buf, size_t nbyte);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/read.html
+    pub extern fn read(fd: c_int, buf: [*]u8, count: usize) isize;
 
     //
     //
