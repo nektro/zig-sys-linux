@@ -2,6 +2,10 @@ const std = @import("std");
 const builtin = @import("builtin");
 const linux = std.os.linux;
 
+comptime {
+    std.debug.assert(builtin.target.os.tag == .linux);
+}
+
 pub const errno = struct {
     pub const Error = error{
         Unexpected,
