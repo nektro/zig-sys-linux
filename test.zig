@@ -15,4 +15,14 @@ test {
     _ = &linux.mkdirat;
     _ = &linux.pthread_self;
     _ = &linux.gettid;
+    _ = &linux.fstatat;
+    _ = &linux.socket;
+    _ = &linux.listen;
+    _ = &linux.bind;
+    _ = &linux.connect;
+    _ = &linux.shutdown;
+    _ = &linux.setsockopt;
+    _ = &linux.accept4;
+    _ = &linux.send;
+    _ = &linux.recv;
 }

@@ -927,6 +927,36 @@ pub const errno = struct {
     }
 };
 
+pub const eai = struct {
+    pub const Error = error{
+        EAI_BADFLAGS,
+        EAI_NONAME,
+        EAI_AGAIN,
+        EAI_FAIL,
+        EAI_NODATA,
+        EAI_FAMILY,
+        EAI_SOCKTYPE,
+        EAI_SERVICE,
+        EAI_MEMORY,
+        EAI_SYSTEM,
+        EAI_OVERFLOW,
+    };
+
+    pub const Enum = enum(c_int) {
+        EAI_BADFLAGS = -1,
+        EAI_NONAME = -2,
+        EAI_AGAIN = -3,
+        EAI_FAIL = -4,
+        EAI_NODATA = -5,
+        EAI_FAMILY = -6,
+        EAI_SOCKTYPE = -7,
+        EAI_SERVICE = -8,
+        EAI_MEMORY = -10,
+        EAI_SYSTEM = -11,
+        EAI_OVERFLOW = -12,
+    };
+};
+
 pub const libc = struct {
     /// void _Exit(int status);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/_Exit.html
@@ -1044,6 +1074,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/atanl.html
     pub extern fn atanl(x: c_longdouble) c_longdouble;
 
+    /// int bind(int socket, const struct sockaddr *address, socklen_t address_len);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/bind.html
+    pub extern fn bind(socket: c_int, address: *const struct_sockaddr, address_len: socklen_t) c_int;
+
     /// double cbrt(double x);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/cbrt.html
     pub extern fn cbrt(x: f64) f64;
@@ -1103,6 +1137,10 @@ pub const libc = struct {
     /// void closelog(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/closelog.html
     pub extern fn closelog() void;
+
+    /// int connect(int socket, const struct sockaddr *address, socklen_t address_len);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/connect.html
+    pub extern fn connect(socket: c_int, address: *const struct_sockaddr, address_len: socklen_t) c_int;
 
     /// double copysign(double x, double y);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/copysign.html
@@ -2144,6 +2182,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/read.html
     pub extern fn read(fd: c_int, buf: [*]u8, count: usize) isize;
 
+    /// ssize_t recv(int socket, void *buffer, size_t length, int flags);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/recv.html
+    pub extern fn recv(fd: c_int, buffer: [*]u8, length: usize, flags: c_int) isize;
+
     /// double remainder(double x, double y);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/remainder.html
     pub extern fn remainder(x: f64, y: f64) f64;
@@ -2232,6 +2274,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/semctl.html
     pub extern fn semctl(semid: c_int, semnum: c_int, cmd: c_int, ...) c_int;
 
+    /// ssize_t send(int socket, const void *buffer, size_t length, int flags);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/send.html
+    pub extern fn send(fd: c_int, buffer: [*]const u8, length: usize, flags: c_int) isize;
+
     /// int setegid(gid_t gid);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/setegid.html
     pub extern fn setegid(gid: gid_t) c_int;
@@ -2287,6 +2333,10 @@ pub const libc = struct {
     /// pid_t setsid(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/setsid.html
     pub extern fn setsid() pid_t;
+
+    /// int setsockopt(int socket, int level, int option_name, const void *option_value, socklen_t option_len);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/setsockopt.html
+    pub extern fn setsockopt(fd: c_int, level: c_int, optname: c_int, optval: *const anyopaque, optlen: socklen_t) c_int;
 
     /// int setuid(uid_t uid);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/setuid.html
@@ -2557,6 +2607,7 @@ pub const libc = struct {
 
     pub extern fn __errno_location() *c_int;
     pub extern fn gettid() pid_t;
+    pub extern fn accept4(socket: c_int, noalias address: ?*struct_sockaddr, noalias address_len: *socklen_t, flags: c_int) c_int;
 };
 
 pub const clock_t = c_long;
@@ -2580,7 +2631,6 @@ pub const nl_catd = *const opaque {};
 pub const intmax_t = i64;
 pub const wchar_t = c_int;
 pub const mode_t = c_uint;
-pub const struct_sockaddr = linux.sockaddr;
 pub const socklen_t = c_uint;
 pub const clockid_t = c_int;
 pub const struct_timespec = linux.timespec;
@@ -2591,6 +2641,16 @@ pub const off_t = linux.off_t;
 pub const ino_t = linux.ino_t;
 pub const struct_stat = linux.Stat;
 pub const struct_iovec = extern struct { base: [*]u8, len: usize };
+pub const in_addr_t = u32;
+pub const in_port_t = u16;
+pub const sa_family_t = c_ushort;
+pub const struct_in_addr = extern struct { addr: in_addr_t };
+pub const struct_in6_addr = extern struct { addr: [16]u8 };
+pub const struct_sockaddr = extern struct { family: AF, data: [14]u8 };
+pub const struct_sockaddr_in = extern struct { family: AF = .INET, port: in_port_t, addr: struct_in_addr, zero: [8]u8 = @splat(0) };
+pub const struct_sockaddr_in6 = extern struct { family: AF = .INET6, port: in_port_t, flowinfo: u32, addr: struct_in6_addr, scope_id: u32 };
+pub const struct_sockaddr_un = extern struct { family: AF = .UNIX, path: [108]u8 };
+pub const struct_addrinfo = extern struct { flags: c_int, family: c_int, socktype: c_int, protocol: c_int, addrlen: socklen_t, addr: ?*struct_sockaddr, canonname: ?[*:0]u8, next: ?*struct_addrinfo };
 
 pub const AT = struct {
     pub const FDCWD = -100;
@@ -2740,37 +2800,197 @@ pub const TZNAME_MAX = 6;
 pub const TTY_NAME_MAX = 32;
 pub const HOST_NAME_MAX = 255;
 
+pub const AF = enum(sa_family_t) {
+    UNSPEC = 0,
+    LOCAL = 1,
+    INET = 2,
+    AX25 = 3,
+    IPX = 4,
+    APPLETALK = 5,
+    NETROM = 6,
+    BRIDGE = 7,
+    ATMPVC = 8,
+    X25 = 9,
+    INET6 = 10,
+    ROSE = 11,
+    DECnet = 12,
+    NETBEUI = 13,
+    SECURITY = 14,
+    KEY = 15,
+    NETLINK = 16,
+    PACKET = 17,
+    ASH = 18,
+    ECONET = 19,
+    ATMSVC = 20,
+    RDS = 21,
+    SNA = 22,
+    IRDA = 23,
+    PPPOX = 24,
+    WANPIPE = 25,
+    LLC = 26,
+    IB = 27,
+    MPLS = 28,
+    CAN = 29,
+    TIPC = 30,
+    BLUETOOTH = 31,
+    IUCV = 32,
+    RXRPC = 33,
+    ISDN = 34,
+    PHONET = 35,
+    IEEE802154 = 36,
+    CAIF = 37,
+    ALG = 38,
+    NFC = 39,
+    VSOCK = 40,
+    KCM = 41,
+    QIPCRTR = 42,
+    SMC = 43,
+    XDP = 44,
+
+    pub const UNIX: AF = .LOCAL;
+    pub const FILE: AF = .LOCAL;
+    pub const ROUTE: AF = .NETLINK;
+};
+
+pub const SOCK = struct {
+    pub const STREAM = 1;
+    pub const DGRAM = 2;
+    pub const RAW = 3;
+    pub const RDM = 4;
+    pub const SEQPACKET = 5;
+    pub const DCCP = 6;
+    pub const PACKET = 10;
+    pub const CLOEXEC = 0o2000000;
+    pub const NONBLOCK = 0o4000;
+};
+
+pub const SHUT = enum(c_int) {
+    RD = 0,
+    WR = 1,
+    RDWR = 2,
+};
+
+pub const IPPROTO = struct {
+    pub const IP = 0;
+    pub const HOPOPTS = 0;
+    pub const ICMP = 1;
+    pub const IGMP = 2;
+    pub const IPIP = 4;
+    pub const TCP = 6;
+    pub const EGP = 8;
+    pub const PUP = 12;
+    pub const UDP = 17;
+    pub const IDP = 22;
+    pub const TP = 29;
+    pub const DCCP = 33;
+    pub const IPV6 = 41;
+    pub const ROUTING = 43;
+    pub const FRAGMENT = 44;
+    pub const RSVP = 46;
+    pub const GRE = 47;
+    pub const ESP = 50;
+    pub const AH = 51;
+    pub const ICMPV6 = 58;
+    pub const NONE = 59;
+    pub const DSTOPTS = 60;
+    pub const MTP = 92;
+    pub const BEETPH = 94;
+    pub const ENCAP = 98;
+    pub const PIM = 103;
+    pub const COMP = 108;
+    pub const SCTP = 132;
+    pub const MH = 135;
+    pub const UDPLITE = 136;
+    pub const MPLS = 137;
+    pub const ETHERNET = 143;
+    pub const RAW = 255;
+    pub const MPTCP = 262;
+};
+
+pub const SOL = struct {
+    pub const SOCKET = 1;
+    pub const IP = 0;
+    pub const IPV6 = 41;
+    pub const ICMPV6 = 58;
+    pub const RAW = 255;
+    pub const DECNET = 261;
+    pub const X25 = 262;
+    pub const PACKET = 263;
+    pub const ATM = 264;
+    pub const AAL = 265;
+    pub const IRDA = 266;
+    pub const NETBEUI = 267;
+    pub const LLC = 268;
+    pub const DCCP = 269;
+    pub const NETLINK = 270;
+    pub const TIPC = 271;
+    pub const RXRPC = 272;
+    pub const PPPOL2TP = 273;
+    pub const BLUETOOTH = 274;
+    pub const PNPIPE = 275;
+    pub const RDS = 276;
+    pub const IUCV = 277;
+    pub const CAIF = 278;
+    pub const ALG = 279;
+    pub const NFC = 280;
+    pub const KCM = 281;
+    pub const TLS = 282;
+    pub const XDP = 283;
+};
+
+pub const SO = struct {
+    pub const DEBUG = 1;
+    pub const REUSEADDR = 2;
+    pub const TYPE = 3;
+    pub const ERROR = 4;
+    pub const DONTROUTE = 5;
+    pub const BROADCAST = 6;
+    pub const SNDBUF = 7;
+    pub const RCVBUF = 8;
+    pub const KEEPALIVE = 9;
+    pub const OOBINLINE = 10;
+    pub const NO_CHECK = 11;
+    pub const PRIORITY = 12;
+    pub const LINGER = 13;
+    pub const BSDCOMPAT = 14;
+    pub const REUSEPORT = 15;
+    pub const PASSCRED = 16;
+    pub const PEERCRED = 17;
+    pub const RCVLOWAT = 18;
+    pub const SNDLOWAT = 19;
+    pub const ACCEPTCONN = 30;
+    pub const PEERSEC = 31;
+    pub const SNDBUFFORCE = 32;
+    pub const RCVBUFFORCE = 33;
+    pub const PROTOCOL = 38;
+    pub const DOMAIN = 39;
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
-
 pub fn exit(status: c_int) noreturn {
     return libc.exit(status);
 }
-
 pub fn getenv(name: [:0]const u8) ?[:0]u8 {
     return std.mem.sliceTo(libc.getenv(name.ptr) orelse return null, 0);
 }
-
 pub fn openat(fd: c_int, file: [*:0]const u8, oflag: c_int) errno.Error!c_int {
     const rc = libc.openat(fd, file, oflag);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     return rc;
 }
-
 pub fn close(fd: c_int) errno.Error!void {
     const rc = libc.close(fd);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
 }
-
 pub fn read(fd: c_int, buf: []u8) errno.Error!usize {
     const rc = libc.read(fd, buf.ptr, buf.len);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return @intCast(rc);
 }
-
 pub fn fstat(fd: c_int) errno.Error!struct_stat {
     var buf: struct_stat = undefined;
     const rc = libc.fstat(fd, &buf);
@@ -2778,7 +2998,6 @@ pub fn fstat(fd: c_int) errno.Error!struct_stat {
     std.debug.assert(rc == 0);
     return buf;
 }
-
 pub fn readv(fd: c_int, bufs: []const struct_iovec) errno.Error!usize {
     std.debug.assert(bufs.len > 0);
     std.debug.assert(bufs.len <= IOV_MAX);
@@ -2787,25 +3006,70 @@ pub fn readv(fd: c_int, bufs: []const struct_iovec) errno.Error!usize {
     std.debug.assert(rc >= 0);
     return @intCast(rc);
 }
-
 pub fn mkdirat(fd: c_int, path: [*:0]const u8, mode: mode_t) errno.Error!void {
     const rc = libc.mkdirat(fd, path, mode);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
 }
-
 pub fn pthread_self() pthread_t {
     return libc.pthread_self();
 }
-
 pub fn gettid() pid_t {
     return libc.gettid();
 }
-
 pub fn fstatat(fd: c_int, path: [*:0]const u8, flag: c_int) errno.Error!struct_stat {
     var buf: struct_stat = undefined;
     const rc = libc.fstatat(fd, path, &buf, flag);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
     return buf;
+}
+pub fn socket(domain: AF, ty: c_int, protocol: c_int) errno.Error!c_uint {
+    const rc = libc.socket(@intFromEnum(domain), ty, protocol);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc > 0);
+    return @intCast(rc);
+}
+pub fn listen(socketfd: c_uint, backlog: c_int) errno.Error!void {
+    const rc = libc.listen(@intCast(socketfd), backlog);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+pub fn bind(socketfd: c_uint, address: *const struct_sockaddr, address_len: socklen_t) errno.Error!void {
+    const rc = libc.bind(@intCast(socketfd), address, address_len);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+pub fn connect(socketfd: c_uint, address: *const struct_sockaddr, address_len: socklen_t) errno.Error!void {
+    const rc = libc.connect(@intCast(socketfd), address, address_len);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+pub fn shutdown(socketfd: c_uint, how: SHUT) errno.Error!void {
+    const rc = libc.shutdown(@intCast(socketfd), @intFromEnum(how));
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+pub fn setsockopt(socketfd: c_uint, level: c_int, optname: c_int, opaque_opt: []const u8) errno.Error!void {
+    const rc = libc.setsockopt(@intCast(socketfd), level, optname, opaque_opt.ptr, @intCast(opaque_opt.len));
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+pub fn accept4(socketfd: c_uint, noalias address: ?*struct_sockaddr, noalias address_len: *socklen_t, flags: c_int) errno.Error!c_uint {
+    const rc = libc.accept4(@intCast(socketfd), address, address_len, flags);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc > 0);
+    return @intCast(rc);
+}
+pub fn send(socketfd: c_uint, buffer: []const u8, flags: c_int) errno.Error!usize {
+    const rc = libc.send(@intCast(socketfd), buffer.ptr, buffer.len, flags);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
+}
+pub fn recv(socketfd: c_uint, buffer: []u8, flags: c_int) errno.Error!usize {
+    const rc = libc.recv(@intCast(socketfd), buffer.ptr, buffer.len, flags);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
 }
