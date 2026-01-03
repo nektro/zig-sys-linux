@@ -1070,9 +1070,33 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/ceill.html
     pub extern fn ceill(x: c_longdouble) c_longdouble;
 
+    /// int chdir(const char *path);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/chdir.html
+    pub extern fn chdir(path: [*:0]const u8) c_int;
+
+    /// int chmod(const char *path, mode_t mode);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/chmod.html
+    pub extern fn chmod(path: [*:0]const u8, mode: mode_t) c_int;
+
+    /// int chown(const char *path, uid_t owner, gid_t group);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/chown.html
+    pub extern fn chown(path: [*:0]const u8, owner: uid_t, group: gid_t) c_int;
+
     /// clock_t clock(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/clock.html
     pub extern fn clock() clock_t;
+
+    /// int clock_getcpuclockid(pid_t pid, clockid_t *clock_id);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/clock_getcpuclockid.html
+    pub extern fn clock_getcpuclockid(pid: pid_t, clock_id: *clockid_t) c_int;
+
+    /// int clock_getres(clockid_t clock_id, struct timespec *res);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/clock_getres.html
+    pub extern fn clock_getres(clock_id: clockid_t, res: ?*struct_timespec) c_int;
+
+    /// int clock_gettime(clockid_t clock_id, struct timespec *tp);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/clock_gettime.html
+    pub extern fn clock_gettime(clock_id: clockid_t, tp: *struct_timespec) c_int;
 
     /// int close(int fildes);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/close.html
@@ -2513,6 +2537,10 @@ pub const libc = struct {
     /// int wcwidth(wchar_t wc);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/wcwidth.html
     pub extern fn wcwidth(wc: wchar_t) c_int;
+
+    /// ssize_t write(int fildes, const void *buf, size_t nbyte);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/write.html
+    pub extern fn write(fd: c_int, buf: *const anyopaque, n: usize) isize;
 
     /// double y0(double x);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/y0.html
