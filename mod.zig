@@ -894,34 +894,32 @@ pub const errno = struct {
         return null;
     }
 
-    const map = blk: {
-        const KV = struct { []const u8, Error };
-        var kvs: []const KV = &.{};
-        for (std.meta.fields(Enum)) |field| {
-            kvs = kvs ++ &[1]KV{.{ field.name, @field(Error, field.name) }};
+    comptime {
+        // assert Enum is sequential
+        var value: c_ushort = 0; // SUCCESS
+        for (std.enums.values(Enum)) |val| {
+            std.debug.assert(@intFromEnum(val) > value);
+            value = @intFromEnum(val);
         }
-        break :blk std.StaticStringMap(Error).initComptime(kvs);
+    }
+    comptime {
+        // sanity test
+        std.debug.assert(@intFromEnum(Enum.EPERM) == 1);
+    }
+    const list = blk: {
+        const values = std.enums.values(Enum);
+        const len = @intFromEnum(values[values.len - 1]) + 1;
+        var errors: [len]Error = @splat(error.Unexpected);
+        for (values) |f| errors[@intFromEnum(f)] = @field(Error, @tagName(f));
+        const final = errors;
+        break :blk final;
     };
 
     pub fn fromInt(code: c_int) Error {
-        const errors_are_seqential = comptime blk: {
-            if (@intFromEnum(Enum.EPERM) != 1) break :blk false;
-            var prev: u16 = @intFromError(Error.EPERM);
-            for (std.meta.fields(Error)[1..]) |field| {
-                const int = @intFromError(@field(anyerror, field.name));
-                if (int != prev + 1) break :blk false;
-                prev = int;
-            }
-            break :blk true;
-        };
-        if (errors_are_seqential) {
-            // avoid an inline for and N comparisons
-            if (code < 1) return error.Unexpected;
-            if (code > std.meta.fields(Enum).len) return error.Unexpected;
-            const ucode: c_ushort = @intCast(code);
-            return @errorCast(@errorFromInt(@intFromError(Error.EPERM) + ucode - @intFromEnum(Enum.EPERM)));
-        }
-        return map.get(std.enums.tagName(Enum, @enumFromInt(code)) orelse return error.Unexpected).?;
+        @setRuntimeSafety(false);
+        if (code >= list.len) return error.Unexpected;
+        if (code <= 0) return error.Unexpected;
+        return list[@intCast(code)];
     }
 
     pub fn fromLibC() c_int {
