@@ -1450,6 +1450,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/free.html
     pub extern fn free(ptr: ?*anyopaque) void;
 
+    /// void freeaddrinfo(struct addrinfo *ai);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/freeaddrinfo.html
+    pub extern fn freeaddrinfo(ai: *const struct_addrinfo) void;
+
     /// void freelocale(locale_t locobj);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/freelocale.html
     pub extern fn freelocale(locobj: locale_t) void;
@@ -3100,4 +3104,7 @@ pub fn getaddrinfo(noalias nodename: ?[*:0]const u8, noalias servname: ?[*:0]con
     if (rc < 0) return eai.fromInt(rc);
     std.debug.assert(rc == 0);
     return pai;
+}
+pub fn freeaddrinfo(ai: *const struct_addrinfo) void {
+    return libc.freeaddrinfo(ai);
 }

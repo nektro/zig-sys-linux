@@ -26,4 +26,5 @@ test {
     _ = &linux.send;
     _ = &linux.recv;
     _ = &linux.getaddrinfo;
+    _ = &linux.freeaddrinfo;
 }
