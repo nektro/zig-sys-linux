@@ -25,4 +25,5 @@ test {
     _ = &linux.accept4;
     _ = &linux.send;
     _ = &linux.recv;
+    _ = &linux.getaddrinfo;
 }

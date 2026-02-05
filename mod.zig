@@ -1478,6 +1478,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fsync.html
     pub extern fn fsync(fd: c_int) c_int;
 
+    /// int getaddrinfo(const char *restrict nodename, const char *restrict servname, const struct addrinfo *restrict hints, struct addrinfo **restrict res);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getaddrinfo.html
+    pub extern fn getaddrinfo(noalias nodename: ?[*:0]const u8, noalias servname: ?[*:0]const u8, noalias req: ?*const struct_addrinfo, noalias pai: **const struct_addrinfo) c_int;
+
     /// int getchar(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getchar.html
     pub extern fn getchar() c_int;
@@ -3088,4 +3092,12 @@ pub fn recv(socketfd: c_uint, buffer: []u8, flags: c_int) errno.Error!usize {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return @intCast(rc);
+}
+pub fn getaddrinfo(noalias nodename: ?[*:0]const u8, noalias servname: ?[*:0]const u8, noalias req: ?*const struct_addrinfo) eai.Error!*const struct_addrinfo {
+    var pai: *const struct_addrinfo = undefined;
+    var hints = std.mem.zeroes(struct_addrinfo);
+    const rc = libc.getaddrinfo(nodename, servname, req orelse &hints, &pai);
+    if (rc < 0) return eai.fromInt(rc);
+    std.debug.assert(rc == 0);
+    return pai;
 }
