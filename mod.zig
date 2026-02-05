@@ -955,6 +955,22 @@ pub const eai = struct {
         EAI_SYSTEM = -11,
         EAI_OVERFLOW = -12,
     };
+
+    pub fn fromInt(code: c_int) Error {
+        return switch (@as(Enum, @enumFromInt(code))) {
+            .EAI_BADFLAGS => error.EAI_BADFLAGS,
+            .EAI_NONAME => error.EAI_NONAME,
+            .EAI_AGAIN => error.EAI_AGAIN,
+            .EAI_FAIL => error.EAI_FAIL,
+            .EAI_NODATA => error.EAI_NODATA,
+            .EAI_FAMILY => error.EAI_FAMILY,
+            .EAI_SOCKTYPE => error.EAI_SOCKTYPE,
+            .EAI_SERVICE => error.EAI_SERVICE,
+            .EAI_MEMORY => error.EAI_MEMORY,
+            .EAI_SYSTEM => error.EAI_SYSTEM,
+            .EAI_OVERFLOW => error.EAI_OVERFLOW,
+        };
+    }
 };
 
 pub const libc = struct {
