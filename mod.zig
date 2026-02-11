@@ -2814,6 +2814,21 @@ pub const S = struct {
     pub const IRWXO = 0o007;
 };
 
+pub const CLOCK = struct {
+    pub const REALTIME = 0;
+    pub const MONOTONIC = 1;
+    pub const PROCESS_CPUTIME_ID = 2;
+    pub const THREAD_CPUTIME_ID = 3;
+    pub const MONOTONIC_RAW = 4;
+    pub const REALTIME_COARSE = 5;
+    pub const MONOTONIC_COARSE = 6;
+    pub const BOOTTIME = 7;
+    pub const REALTIME_ALARM = 8;
+    pub const BOOTTIME_ALARM = 9;
+    pub const SGI_CYCLE = 10;
+    pub const TAI = 11;
+};
+
 pub const NAME_MAX = 255;
 pub const PATH_MAX = 4096;
 pub const NGROUPS_MAX = 32;
@@ -3107,4 +3122,11 @@ pub fn getaddrinfo(noalias nodename: ?[*:0]const u8, noalias servname: ?[*:0]con
 }
 pub fn freeaddrinfo(ai: *const struct_addrinfo) void {
     return libc.freeaddrinfo(ai);
+}
+pub fn clock_gettime(clock_id: clockid_t) !struct_timespec {
+    var tp: struct_timespec = undefined;
+    const rc = libc.clock_gettime(clock_id, &tp);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+    return tp;
 }

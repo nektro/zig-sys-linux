@@ -27,4 +27,5 @@ test {
     _ = &linux.recv;
     _ = &linux.getaddrinfo;
     _ = &linux.freeaddrinfo;
+    _ = &linux.clock_gettime;
 }
