@@ -30,4 +30,5 @@ test {
     _ = &linux.clock_gettime;
     _ = &linux.memfd_create;
     _ = &linux.readlinkat;
+    _ = &linux.write;
 }

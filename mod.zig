@@ -3151,3 +3151,9 @@ pub fn readlinkat(dirfd: c_int, noalias path: [*:0]const u8, noalias buf: []u8) 
     std.debug.assert(rc >= 0);
     return buf[0..@intCast(rc) :0];
 }
+pub fn write(fd: c_int, buf: []const u8) !usize {
+    const rc = libc.write(fd, buf.ptr, buf.len);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
+}
