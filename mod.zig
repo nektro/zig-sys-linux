@@ -2206,6 +2206,14 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/read.html
     pub extern fn read(fd: c_int, buf: [*]u8, count: usize) isize;
 
+    /// ssize_t readlink(const char *restrict path, char *restrict buf, size_t bufsize);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/readlink.html
+    pub extern fn readlink(noalias path: [*:0]const u8, noalias buf: [*]u8, len: usize) isize;
+
+    /// ssize_t readlinkat(int fd, const char *restrict path, char *restrict buf, size_t bufsize);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/readlinkat.html
+    pub extern fn readlinkat(fd: c_int, noalias path: [*:0]const u8, noalias buf: [*]u8, len: usize) isize;
+
     /// ssize_t recv(int socket, void *buffer, size_t length, int flags);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/recv.html
     pub extern fn recv(fd: c_int, buffer: [*]u8, length: usize, flags: c_int) isize;
@@ -3136,4 +3144,10 @@ pub fn memfd_create(name: [*:0]const u8, flags: c_uint) !c_int {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return rc;
+}
+pub fn readlinkat(dirfd: c_int, noalias path: [*:0]const u8, noalias buf: []u8) ![:0]u8 {
+    const rc = libc.readlinkat(dirfd, path, buf.ptr, buf.len);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return buf[0..@intCast(rc) :0];
 }
