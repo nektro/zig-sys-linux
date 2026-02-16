@@ -28,4 +28,5 @@ test {
     _ = &linux.getaddrinfo;
     _ = &linux.freeaddrinfo;
     _ = &linux.clock_gettime;
+    _ = &linux.memfd_create;
 }
