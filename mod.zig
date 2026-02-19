@@ -2622,6 +2622,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/write.html
     pub extern fn write(fd: c_int, buf: *const anyopaque, n: usize) isize;
 
+    /// ssize_t writev(int fildes, const struct iovec *iov, int iovcnt);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/writev.html
+    pub extern fn writev(fd: c_int, iovec: [*]const struct_iovec, count: c_int) isize;
+
     /// double y0(double x);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/y0.html
     pub extern fn y0(x: f64) f64;
@@ -3153,6 +3157,12 @@ pub fn readlinkat(dirfd: c_int, noalias path: [*:0]const u8, noalias buf: []u8) 
 }
 pub fn write(fd: c_int, buf: []const u8) !usize {
     const rc = libc.write(fd, buf.ptr, buf.len);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
+}
+pub fn writev(fd: c_int, iovec: []const struct_iovec) !usize {
+    const rc = libc.writev(fd, iovec.ptr, @intCast(iovec.len));
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return @intCast(rc);

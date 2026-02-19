@@ -31,4 +31,5 @@ test {
     _ = &linux.memfd_create;
     _ = &linux.readlinkat;
     _ = &linux.write;
+    _ = &linux.writev;
 }
