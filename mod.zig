@@ -1598,6 +1598,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getsid.html
     pub extern fn getsid(pid: pid_t) pid_t;
 
+    /// int getsockname(int socket, struct sockaddr *restrict address, socklen_t *restrict address_len);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getsockname.html
+    pub extern fn getsockname(fd: c_int, noalias addr: *struct_sockaddr, noalias len: *socklen_t) c_int;
+
     /// uid_t getuid(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getuid.html
     pub extern fn getuid() uid_t;
@@ -3166,4 +3170,9 @@ pub fn writev(fd: c_int, iovec: []const struct_iovec) !usize {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return @intCast(rc);
+}
+pub fn getsockname(socketfd: c_uint, noalias address: *struct_sockaddr, noalias address_len: *socklen_t) errno.Error!void {
+    const rc = libc.getsockname(@intCast(socketfd), address, address_len);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
 }

@@ -32,4 +32,5 @@ test {
     _ = &linux.readlinkat;
     _ = &linux.write;
     _ = &linux.writev;
+    _ = &linux.getsockname;
 }
