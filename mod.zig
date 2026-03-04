@@ -2649,6 +2649,7 @@ pub const libc = struct {
     pub extern fn gettid() pid_t;
     pub extern fn accept4(socket: c_int, noalias address: ?*struct_sockaddr, noalias address_len: *socklen_t, flags: c_int) c_int;
     pub extern fn memfd_create(name: [*:0]const u8, flags: c_uint) c_int;
+    pub extern fn sendfile(out_fd: c_int, in_fd: c_int, offset: ?*const off_t, count: usize) isize;
 };
 
 pub const clock_t = c_long;
@@ -3175,4 +3176,10 @@ pub fn getsockname(socketfd: c_uint, noalias address: *struct_sockaddr, noalias 
     const rc = libc.getsockname(@intCast(socketfd), address, address_len);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
+}
+pub fn sendfile(out_fd: c_int, in_fd: c_int, offset: ?*const off_t, count: usize) errno.Error!usize {
+    const rc = libc.sendfile(out_fd, in_fd, offset, count);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
 }

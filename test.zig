@@ -33,4 +33,5 @@ test {
     _ = &linux.write;
     _ = &linux.writev;
     _ = &linux.getsockname;
+    _ = &linux.sendfile;
 }
