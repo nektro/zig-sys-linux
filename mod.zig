@@ -3016,6 +3016,10 @@ pub const SO = struct {
     pub const PEERCRED = 17;
     pub const RCVLOWAT = 18;
     pub const SNDLOWAT = 19;
+
+    pub const RCVTIMEO = 20;
+    pub const SNDTIMEO = 21;
+
     pub const ACCEPTCONN = 30;
     pub const PEERSEC = 31;
     pub const SNDBUFFORCE = 32;
