@@ -2676,6 +2676,7 @@ pub const mode_t = c_uint;
 pub const socklen_t = c_uint;
 pub const clockid_t = c_int;
 pub const struct_timespec = linux.timespec;
+pub const struct_timeval = linux.timeval;
 pub const DIR = opaque {};
 pub const time_t = i64;
 pub const div_t = extern struct { quot: c_int, rem: c_int };
