@@ -2650,6 +2650,7 @@ pub const libc = struct {
     pub extern fn accept4(socket: c_int, noalias address: ?*struct_sockaddr, noalias address_len: *socklen_t, flags: c_int) c_int;
     pub extern fn memfd_create(name: [*:0]const u8, flags: c_uint) c_int;
     pub extern fn sendfile(out_fd: c_int, in_fd: c_int, offset: ?*const off_t, count: usize) isize;
+    pub extern fn getdents(dirfd: c_int, buf: [*]u8, nbytes: usize) c_int;
 };
 
 pub const clock_t = c_long;
@@ -2694,6 +2695,7 @@ pub const struct_sockaddr_in = extern struct { family: AF = .INET, port: in_port
 pub const struct_sockaddr_in6 = extern struct { family: AF = .INET6, port: in_port_t, flowinfo: u32, addr: struct_in6_addr, scope_id: u32 };
 pub const struct_sockaddr_un = extern struct { family: AF = .UNIX, path: [108]u8 };
 pub const struct_addrinfo = extern struct { flags: c_int, family: c_int, socktype: c_int, protocol: c_int, addrlen: socklen_t, addr: ?*struct_sockaddr, canonname: ?[*:0]u8, next: ?*struct_addrinfo };
+pub const struct_dirent = extern struct { ino: ino_t, off: off_t, reclen: c_ushort, type: DT, name: [NAME_MAX + 1]u8 };
 
 pub const AT = struct {
     pub const FDCWD = -100;
@@ -3028,6 +3030,18 @@ pub const SO = struct {
     pub const DOMAIN = 39;
 };
 
+pub const DT = enum(u8) {
+    UNKNOWN = 0,
+    FIFO = 1,
+    CHR = 2,
+    DIR = 4,
+    BLK = 6,
+    REG = 8,
+    LNK = 10,
+    SOCK = 12,
+    WHT = 14,
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
@@ -3184,6 +3198,12 @@ pub fn getsockname(socketfd: c_uint, noalias address: *struct_sockaddr, noalias 
 }
 pub fn sendfile(out_fd: c_int, in_fd: c_int, offset: ?*const off_t, count: usize) errno.Error!usize {
     const rc = libc.sendfile(out_fd, in_fd, offset, count);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
+}
+pub fn getdents(dirfd: c_int, buf: []u8) errno.Error!usize {
+    const rc = libc.getdents(dirfd, buf.ptr, buf.len);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return @intCast(rc);
