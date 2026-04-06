@@ -35,4 +35,5 @@ test {
     _ = &linux.getsockname;
     _ = &linux.sendfile;
     _ = &linux.getdents;
+    _ = &linux.renameat;
 }

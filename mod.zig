@@ -2234,6 +2234,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/remainderl.html
     pub extern fn remainderl(x: c_longdouble, y: c_longdouble) c_longdouble;
 
+    /// int renameat(int oldfd, const char *old, int newfd, const char *new);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/renameat.html
+    pub extern fn renameat(oldfd: c_int, old: [*:0]const u8, newfd: c_int, new: [*:0]const u8) c_int;
+
     /// double rint(double x);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/rint.html
     pub extern fn rint(x: f64) f64;
@@ -3207,4 +3211,9 @@ pub fn getdents(dirfd: c_int, buf: []u8) errno.Error!usize {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return @intCast(rc);
+}
+pub fn renameat(oldfd: c_int, old: [*:0]const u8, newfd: c_int, new: [*:0]const u8) !void {
+    const rc = libc.renameat(oldfd, old, newfd, new);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
 }
