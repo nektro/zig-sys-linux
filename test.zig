@@ -36,4 +36,6 @@ test {
     _ = &linux.sendfile;
     _ = &linux.getdents;
     _ = &linux.renameat;
+    _ = &linux.mmap;
+    _ = &linux.munmap;
 }

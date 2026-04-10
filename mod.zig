@@ -2074,6 +2074,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/mlockall.html
     pub extern fn mlockall(flags: c_int) c_int;
 
+    /// void *mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/mmap.html
+    pub extern fn mmap(addr: ?*anyopaque, len: usize, prot: c_int, flags: c_int, fd: c_int, offset: off_t) *allowzero anyopaque;
+
     /// int mq_unlink(const char *name);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/mq_unlink.html
     pub extern fn mq_unlink(name: [*:0]const u8) c_int;
@@ -2085,6 +2089,10 @@ pub const libc = struct {
     /// int munlockall(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/munlockall.html
     pub extern fn munlockall() void;
+
+    /// int munmap(void *addr, size_t len);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/munmap.html
+    pub extern fn munmap(addr: *const anyopaque, len: usize) c_int;
 
     /// double nearbyint(double x);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/nearbyint.html
@@ -2854,6 +2862,55 @@ pub const CLOCK = struct {
     pub const TAI = 11;
 };
 
+pub const MAP = struct {
+    pub const FAILED = -1;
+
+    pub const SHARED = 0x01;
+    pub const PRIVATE = 0x02;
+    pub const SHARED_VALIDATE = 0x03;
+    pub const TYPE = 0x0f;
+    pub const FIXED = 0x10;
+    pub const ANON = 0x20;
+    pub const ANONYMOUS = ANON;
+    pub const NORESERVE = 0x4000;
+    pub const GROWSDOWN = 0x0100;
+    pub const DENYWRITE = 0x0800;
+    pub const EXECUTABLE = 0x1000;
+    pub const LOCKED = 0x2000;
+    pub const POPULATE = 0x8000;
+    pub const NONBLOCK = 0x10000;
+    pub const STACK = 0x20000;
+    pub const HUGETLB = 0x40000;
+    pub const SYNC = 0x80000;
+    pub const FIXED_NOREPLACE = 0x100000;
+    pub const FILE = 0;
+
+    pub const MAP_HUGE_SHIFT = 26;
+    pub const MAP_HUGE_MASK = 0x3f;
+    pub const MAP_HUGE_16KB = 14 << 26;
+    pub const MAP_HUGE_64KB = 16 << 26;
+    pub const MAP_HUGE_512KB = 19 << 26;
+    pub const MAP_HUGE_1MB = 20 << 26;
+    pub const MAP_HUGE_2MB = 21 << 26;
+    pub const MAP_HUGE_8MB = 23 << 26;
+    pub const MAP_HUGE_16MB = 24 << 26;
+    pub const MAP_HUGE_32MB = 25 << 26;
+    pub const MAP_HUGE_256MB = 28 << 26;
+    pub const MAP_HUGE_512MB = 29 << 26;
+    pub const MAP_HUGE_1GB = 30 << 26;
+    pub const MAP_HUGE_2GB = 31 << 26;
+    pub const MAP_HUGE_16GB = 34 << 26;
+};
+
+pub const PROT = struct {
+    pub const NONE = 0;
+    pub const READ = 1;
+    pub const WRITE = 2;
+    pub const EXEC = 4;
+    pub const GROWSDOWN = 0x01000000;
+    pub const GROWSUP = 0x02000000;
+};
+
 pub const NAME_MAX = 255;
 pub const PATH_MAX = 4096;
 pub const NGROUPS_MAX = 32;
@@ -3214,6 +3271,17 @@ pub fn getdents(dirfd: c_int, buf: []u8) errno.Error!usize {
 }
 pub fn renameat(oldfd: c_int, old: [*:0]const u8, newfd: c_int, new: [*:0]const u8) !void {
     const rc = libc.renameat(oldfd, old, newfd, new);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+pub fn mmap(addr: ?*anyopaque, len: usize, prot: c_int, flags: c_int, fd: c_int, offset: off_t) errno.Error![]u8 {
+    const rc = libc.mmap(addr, len, prot, flags, fd, offset);
+    if (@intFromPtr(rc) == MAP.FAILED) return errno.fromInt(errno.fromLibC());
+    const ptr: [*]u8 = @ptrCast(rc);
+    return ptr[0..len];
+}
+pub fn munmap(addr: *const anyopaque, len: usize) errno.Error!void {
+    const rc = libc.munmap(addr, len);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
 }
