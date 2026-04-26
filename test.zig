@@ -38,4 +38,5 @@ test {
     _ = &linux.renameat;
     _ = &linux.mmap;
     _ = &linux.munmap;
+    _ = &linux.openat4;
 }

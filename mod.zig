@@ -3117,6 +3117,11 @@ pub fn openat(fd: c_int, file: [*:0]const u8, oflag: c_int) errno.Error!c_int {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     return rc;
 }
+pub fn openat4(fd: c_int, file: [*:0]const u8, oflag: c_int, mode: mode_t) errno.Error!c_int {
+    const rc = libc.openat(fd, file, oflag, mode);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    return rc;
+}
 pub fn close(fd: c_int) errno.Error!void {
     const rc = libc.close(fd);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
