@@ -2162,9 +2162,62 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/powl.html
     pub extern fn powl(x: c_longdouble, y: c_longdouble) c_longdouble;
 
+    /// int pthread_attr_destroy(pthread_attr_t *attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_attr_destroy.html
+    pub extern fn pthread_attr_destroy(attr: *pthread_attr_t) c_int;
+
+    /// int pthread_attr_init(pthread_attr_t *attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_attr_init.html
+    pub extern fn pthread_attr_init(attr: *pthread_attr_t) c_int;
+
+    /// int pthread_attr_setguardsize(pthread_attr_t *attr, size_t guardsize);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_attr_setguardsize.html
+    pub extern fn pthread_attr_setguardsize(attr: *pthread_attr_t, guardsize: usize) c_int;
+
+    /// int pthread_attr_setstacksize(pthread_attr_t *attr, size_t stacksize);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_attr_setstacksize.html
+    pub extern fn pthread_attr_setstacksize(attr: *pthread_attr_t, stacksize: usize) c_int;
+
     /// int pthread_cancel(pthread_t thread);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_cancel.html
     pub extern fn pthread_cancel(thread: pthread_t) c_int;
+
+    /// int pthread_cond_broadcast(pthread_cond_t *cond);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_cond_broadcast.html
+    pub extern fn pthread_cond_broadcast(cond: *pthread_cond_t) c_int;
+
+    /// int pthread_cond_destroy(pthread_cond_t *cond);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_cond_destroy.html
+    pub extern fn pthread_cond_destroy(cond: *pthread_cond_t) c_int;
+
+    /// int pthread_cond_init(pthread_cond_t *restrict cond, const pthread_condattr_t *restrict attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_cond_init.html
+    pub extern fn pthread_cond_init(noalias cond: *pthread_cond_t, noalias attr: ?*const pthread_condattr_t) c_int;
+
+    /// int pthread_cond_signal(pthread_cond_t *cond);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_cond_signal.html
+    pub extern fn pthread_cond_signal(cond: *pthread_cond_t) c_int;
+
+    /// int pthread_cond_timedwait(pthread_cond_t *restrict cond, pthread_mutex_t *restrict mutex, const struct timespec *restrict abstime);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_cond_timedwait.html
+    pub extern fn pthread_cond_timedwait(noalias cond: *pthread_cond_t, noalias mutex: *pthread_mutex_t, noalias abstime: *const struct_timespec) c_int;
+
+    /// int pthread_cond_wait(pthread_cond_t *restrict cond, pthread_mutex_t *restrict mutex);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_cond_wait.html
+    pub extern fn pthread_cond_wait(noalias cond: *pthread_cond_t, noalias mutex: *pthread_mutex_t) c_int;
+
+    /// int pthread_condattr_destroy(pthread_condattr_t *attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_condattr_destroy.html
+    pub extern fn pthread_condattr_destroy(attr: *pthread_condattr_t) c_int;
+
+
+    /// int pthread_condattr_init(pthread_condattr_t *attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_condattr_init.html
+    pub extern fn pthread_condattr_init(attr: *pthread_condattr_t) c_int;
+
+    /// int pthread_create(pthread_t *restrict thread, const pthread_attr_t *restrict attr, void *(*start_routine)(void*), void *restrict arg);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_create.html
+    pub extern fn pthread_create(noalias newthread: *pthread_t, noalias attr: *const pthread_attr_t, start_routine: *const fn (*anyopaque) callconv(.C) ?*anyopaque, noalias arg: *anyopaque) c_int;
 
     /// int pthread_detach(pthread_t thread);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_detach.html
@@ -2178,9 +2231,41 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_getconcurrency.html
     pub extern fn pthread_getconcurrency() c_int;
 
+    /// int pthread_join(pthread_t thread, void **value_ptr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_join.html
+    pub extern fn pthread_join(thread: pthread_t, retval: ?*?*anyopaque) c_int;
+
     /// int pthread_kill(pthread_t thread, int sig);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_kill.html
     pub extern fn pthread_kill(thread: pthread_t, sig: c_int) c_int;
+
+    /// int pthread_mutex_destroy(pthread_mutex_t *mutex);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_mutex_destroy.html
+    pub extern fn pthread_mutex_destroy(mutex: *pthread_mutex_t) c_int;
+
+    /// int pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_mutex_init.html
+    pub extern fn pthread_mutex_init(mutex: *pthread_mutex_t, attr: ?*const pthread_mutexattr_t) c_int;
+
+    /// int pthread_mutex_lock(pthread_mutex_t *mutex);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_mutex_lock.html
+    pub extern fn pthread_mutex_lock(mutex: *pthread_mutex_t) c_int;
+
+    /// int pthread_mutex_trylock(pthread_mutex_t *mutex);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_mutex_trylock.html
+    pub extern fn pthread_mutex_trylock(mutex: *pthread_mutex_t) c_int;
+
+    /// int pthread_mutex_unlock(pthread_mutex_t *mutex);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_mutex_unlock.html
+    pub extern fn pthread_mutex_unlock(mutex: *pthread_mutex_t) c_int;
+
+    /// int pthread_mutexattr_destroy(pthread_mutexattr_t *attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_mutexattr_destroy.html
+    pub extern fn pthread_mutexattr_destroy(attr: *pthread_mutexattr_t) c_int;
+
+    /// int pthread_mutexattr_init(pthread_mutexattr_t *attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_mutexattr_init.html
+    pub extern fn pthread_mutexattr_init(attr: *pthread_mutexattr_t) c_int;
 
     /// pthread_t pthread_self(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_self.html
@@ -2663,6 +2748,7 @@ pub const libc = struct {
     pub extern fn memfd_create(name: [*:0]const u8, flags: c_uint) c_int;
     pub extern fn sendfile(out_fd: c_int, in_fd: c_int, offset: ?*const off_t, count: usize) isize;
     pub extern fn getdents(dirfd: c_int, buf: [*]u8, nbytes: usize) c_int;
+    pub extern fn sched_getaffinity(pid: pid_t, cpusetsize: usize, mask: *cpu_set_t) c_int;
 };
 
 pub const clock_t = c_long;
@@ -2679,7 +2765,7 @@ pub const struct_utmpx = opaque {};
 pub const wint_t = c_uint;
 pub const struct_if_nameindex = opaque {};
 pub const struct_lconv = opaque {};
-pub const pthread_t = c_ulong;
+pub const pthread_t = *opaque {};
 pub const FILE = opaque {};
 pub const locale_t = *const opaque {};
 pub const nl_catd = *const opaque {};
@@ -2708,6 +2794,16 @@ pub const struct_sockaddr_in6 = extern struct { family: AF = .INET6, port: in_po
 pub const struct_sockaddr_un = extern struct { family: AF = .UNIX, path: [108]u8 };
 pub const struct_addrinfo = extern struct { flags: c_int, family: c_int, socktype: c_int, protocol: c_int, addrlen: socklen_t, addr: ?*struct_sockaddr, canonname: ?[*:0]u8, next: ?*struct_addrinfo };
 pub const struct_dirent = extern struct { ino: ino_t, off: off_t, reclen: c_ushort, type: DT, name: [NAME_MAX + 1]u8 };
+pub const cpu_set_t = [1024 / 8 / @sizeOf(c_ulong)]c_ulong;
+
+const impdef = @cImport({
+    @cInclude("pthread.h");
+});
+pub const pthread_attr_t = impdef.pthread_attr_t;
+pub const pthread_mutexattr_t = impdef.pthread_mutexattr_t;
+pub const pthread_mutex_t = impdef.pthread_mutex_t;
+pub const pthread_condattr_t = impdef.pthread_condattr_t;
+pub const pthread_cond_t = impdef.pthread_cond_t;
 
 pub const AT = struct {
     pub const FDCWD = -100;
@@ -3288,5 +3384,100 @@ pub fn mmap(addr: ?*anyopaque, len: usize, prot: c_int, flags: c_int, fd: c_int,
 pub fn munmap(addr: *const anyopaque, len: usize) errno.Error!void {
     const rc = libc.munmap(addr, len);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_attr_init(attr: *pthread_attr_t) void {
+    const rc = libc.pthread_attr_init(attr);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_attr_destroy(attr: *pthread_attr_t) void {
+    const rc = libc.pthread_attr_destroy(attr);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_attr_setstacksize(attr: *pthread_attr_t, size: usize) !void {
+    const rc = libc.pthread_attr_setstacksize(attr, size);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_attr_setguardsize(attr: *pthread_attr_t, size: usize) !void {
+    const rc = libc.pthread_attr_setguardsize(attr, size);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_create(noalias newthread: *pthread_t, noalias attr: *const pthread_attr_t, start_routine: *const fn (*anyopaque) callconv(.C) ?*anyopaque, noalias arg: *anyopaque) !void {
+    const rc = libc.pthread_create(newthread, attr, start_routine, arg);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_detach(thread: pthread_t) !void {
+    const rc = libc.pthread_detach(thread);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_join(thread: pthread_t, retval: ?*?*anyopaque) !void {
+    const rc = libc.pthread_join(thread, retval);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn sched_getaffinity(pid: pid_t) !cpu_set_t {
+    var cpuset: cpu_set_t = undefined;
+    const rc = libc.sched_getaffinity(pid, @sizeOf(cpu_set_t), &cpuset);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+    return cpuset;
+}
+pub fn pthread_mutex_init(mutex: *pthread_mutex_t, attr: ?*const pthread_mutexattr_t) !void {
+    const rc = libc.pthread_mutex_init(mutex, attr);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_mutex_destroy(mutex: *pthread_mutex_t) !void {
+    const rc = libc.pthread_mutex_destroy(mutex);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_mutex_trylock(mutex: *pthread_mutex_t) !void {
+    const rc = libc.pthread_mutex_trylock(mutex);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_mutex_lock(mutex: *pthread_mutex_t) !void {
+    const rc = libc.pthread_mutex_lock(mutex);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_mutex_unlock(mutex: *pthread_mutex_t) !void {
+    const rc = libc.pthread_mutex_unlock(mutex);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_cond_init(noalias cond: *pthread_cond_t, noalias attr: ?*const pthread_condattr_t) !void {
+    const rc = libc.pthread_cond_init(cond, attr);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_cond_destroy(cond: *pthread_cond_t) !void {
+    const rc = libc.pthread_cond_destroy(cond);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_cond_wait(noalias cond: *pthread_cond_t, noalias mutex: *pthread_mutex_t) !void {
+    const rc = libc.pthread_cond_wait(cond, mutex);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_cond_timedwait(noalias cond: *pthread_cond_t, noalias mutex: *pthread_mutex_t, noalias abstime: *const struct_timespec) !void {
+    const rc = libc.pthread_cond_timedwait(cond, mutex, abstime);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_cond_signal(cond: *pthread_cond_t) !void {
+    const rc = libc.pthread_cond_signal(cond);
+    if (rc != 0) return errno.fromInt(rc);
+    std.debug.assert(rc == 0);
+}
+pub fn pthread_cond_broadcast(cond: *pthread_cond_t) !void {
+    const rc = libc.pthread_cond_broadcast(cond);
+    if (rc != 0) return errno.fromInt(rc);
     std.debug.assert(rc == 0);
 }

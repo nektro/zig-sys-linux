@@ -39,4 +39,23 @@ test {
     _ = &linux.mmap;
     _ = &linux.munmap;
     _ = &linux.openat4;
+    _ = &linux.pthread_attr_init;
+    _ = &linux.pthread_attr_destroy;
+    _ = &linux.pthread_attr_setstacksize;
+    _ = &linux.pthread_attr_setguardsize;
+    _ = &linux.pthread_create;
+    _ = &linux.pthread_detach;
+    _ = &linux.pthread_join;
+    _ = &linux.sched_getaffinity;
+    _ = &linux.pthread_mutex_init;
+    _ = &linux.pthread_mutex_destroy;
+    _ = &linux.pthread_mutex_trylock;
+    _ = &linux.pthread_mutex_lock;
+    _ = &linux.pthread_mutex_unlock;
+    _ = &linux.pthread_cond_init;
+    _ = &linux.pthread_cond_destroy;
+    _ = &linux.pthread_cond_wait;
+    _ = &linux.pthread_cond_timedwait;
+    _ = &linux.pthread_cond_signal;
+    _ = &linux.pthread_cond_broadcast;
 }
