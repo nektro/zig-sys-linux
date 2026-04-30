@@ -59,4 +59,5 @@ test {
     _ = &linux.pthread_cond_signal;
     _ = &linux.pthread_cond_broadcast;
     _ = &linux.mkdtemp;
+    _ = &linux.getrandom;
 }

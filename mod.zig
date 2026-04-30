@@ -2749,6 +2749,7 @@ pub const libc = struct {
     pub extern fn sendfile(out_fd: c_int, in_fd: c_int, offset: ?*const off_t, count: usize) isize;
     pub extern fn getdents(dirfd: c_int, buf: [*]u8, nbytes: usize) c_int;
     pub extern fn sched_getaffinity(pid: pid_t, cpusetsize: usize, mask: *cpu_set_t) c_int;
+    pub extern fn getrandom(buf: [*]u8, size: usize, flags: c_uint) isize;
 };
 
 pub const clock_t = c_long;
@@ -3199,6 +3200,12 @@ pub const DT = enum(u8) {
     WHT = 14,
 };
 
+pub const GRND = struct {
+    pub const NONBLOCK = 0x0001;
+    pub const RANDOM = 0x0002;
+    pub const INSECURE = 0x0004;
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
@@ -3485,4 +3492,10 @@ pub fn mkdtemp(template: [*:0]u8) ![*:0]u8 {
     const rc = libc.mkdtemp(template);
     if (rc == null) return errno.fromInt(errno.fromLibC());
     return rc.?;
+}
+pub fn getrandom(buf: []u8, flags: c_uint) ![]u8 {
+    const rc = libc.getrandom(buf.ptr, buf.len, flags);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return buf[0..@intCast(rc)];
 }
