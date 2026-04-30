@@ -2056,7 +2056,7 @@ pub const libc = struct {
 
     /// char *mkdtemp(char *template);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/mkdtemp.html
-    pub extern fn mkdtemp(template: [*:0]u8) [*:0]u8;
+    pub extern fn mkdtemp(template: [*:0]u8) ?[*:0]u8;
 
     /// int mkfifo(const char *path, mode_t mode);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/mkfifo.html
@@ -3480,4 +3480,9 @@ pub fn pthread_cond_broadcast(cond: *pthread_cond_t) !void {
     const rc = libc.pthread_cond_broadcast(cond);
     if (rc != 0) return errno.fromInt(rc);
     std.debug.assert(rc == 0);
+}
+pub fn mkdtemp(template: [*:0]u8) ![*:0]u8 {
+    const rc = libc.mkdtemp(template);
+    if (rc == null) return errno.fromInt(errno.fromLibC());
+    return rc.?;
 }

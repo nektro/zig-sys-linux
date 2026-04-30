@@ -58,4 +58,5 @@ test {
     _ = &linux.pthread_cond_timedwait;
     _ = &linux.pthread_cond_signal;
     _ = &linux.pthread_cond_broadcast;
+    _ = &linux.mkdtemp;
 }
