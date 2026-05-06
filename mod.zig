@@ -2750,6 +2750,7 @@ pub const libc = struct {
     pub extern fn getdents(dirfd: c_int, buf: [*]u8, nbytes: usize) c_int;
     pub extern fn sched_getaffinity(pid: pid_t, cpusetsize: usize, mask: *cpu_set_t) c_int;
     pub extern fn getrandom(buf: [*]u8, size: usize, flags: c_uint) isize;
+    pub extern fn flock(fd: c_int, op: c_int) c_int;
 };
 
 pub const clock_t = c_long;
@@ -3206,6 +3207,13 @@ pub const GRND = struct {
     pub const INSECURE = 0x0004;
 };
 
+pub const LOCK = struct {
+    pub const SH = 1;
+    pub const EX = 2;
+    pub const NB = 4;
+    pub const UN = 8;
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
@@ -3498,4 +3506,9 @@ pub fn getrandom(buf: []u8, flags: c_uint) ![]u8 {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return buf[0..@intCast(rc)];
+}
+pub fn flock(fd: c_int, op: c_int) !void {
+    const rc = libc.flock(fd, op);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
 }
