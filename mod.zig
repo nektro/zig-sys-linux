@@ -2210,7 +2210,6 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_condattr_destroy.html
     pub extern fn pthread_condattr_destroy(attr: *pthread_condattr_t) c_int;
 
-
     /// int pthread_condattr_init(pthread_condattr_t *attr);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_condattr_init.html
     pub extern fn pthread_condattr_init(attr: *pthread_condattr_t) c_int;
@@ -2751,6 +2750,7 @@ pub const libc = struct {
     pub extern fn sched_getaffinity(pid: pid_t, cpusetsize: usize, mask: *cpu_set_t) c_int;
     pub extern fn getrandom(buf: [*]u8, size: usize, flags: c_uint) isize;
     pub extern fn flock(fd: c_int, op: c_int) c_int;
+    pub extern fn futimens(fd: c_int, times: *const [2]struct_timespec) c_int;
 };
 
 pub const clock_t = c_long;
@@ -3509,6 +3509,11 @@ pub fn getrandom(buf: []u8, flags: c_uint) ![]u8 {
 }
 pub fn flock(fd: c_int, op: c_int) !void {
     const rc = libc.flock(fd, op);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
+pub fn futimens(fd: c_int, times: [2]struct_timespec) !void {
+    const rc = libc.futimens(fd, &times);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
 }

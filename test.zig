@@ -61,4 +61,5 @@ test {
     _ = &linux.mkdtemp;
     _ = &linux.getrandom;
     _ = &linux.flock;
+    _ = &linux.futimens;
 }
