@@ -63,4 +63,11 @@ test {
     _ = &linux.flock;
     _ = &linux.futimens;
     _ = &linux.faccessat;
+    _ = &linux.pthread_rwlock_init;
+    _ = &linux.pthread_rwlock_destroy;
+    _ = &linux.pthread_rwlock_rdlock;
+    _ = &linux.pthread_rwlock_tryrdlock;
+    _ = &linux.pthread_rwlock_wrlock;
+    _ = &linux.pthread_rwlock_trywrlock;
+    _ = &linux.pthread_rwlock_unlock;
 }

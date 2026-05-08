@@ -2266,6 +2266,34 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_mutexattr_init.html
     pub extern fn pthread_mutexattr_init(attr: *pthread_mutexattr_t) c_int;
 
+    /// int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_rwlock_destroy.html
+    pub extern fn pthread_rwlock_destroy(rwlock: *pthread_rwlock_t) c_int;
+
+    /// int pthread_rwlock_init(pthread_rwlock_t *restrict rwlock, const pthread_rwlockattr_t *restrict attr);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_rwlock_init.html
+    pub extern fn pthread_rwlock_init(noalias rwlock: *pthread_rwlock_t, noalias attr: ?*const pthread_rwlockattr_t) c_int;
+
+    /// int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_rwlock_rdlock.html
+    pub extern fn pthread_rwlock_rdlock(rwlock: *pthread_rwlock_t) c_int;
+
+    /// int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_rwlock_tryrdlock.html
+    pub extern fn pthread_rwlock_tryrdlock(rwlock: *pthread_rwlock_t) c_int;
+
+    /// int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_rwlock_trywrlock.html
+    pub extern fn pthread_rwlock_trywrlock(rwlock: *pthread_rwlock_t) c_int;
+
+    /// int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_rwlock_unlock.html
+    pub extern fn pthread_rwlock_unlock(rwlock: *pthread_rwlock_t) c_int;
+
+    /// int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_rwlock_wrlock.html
+    pub extern fn pthread_rwlock_wrlock(rwlock: *pthread_rwlock_t) c_int;
+
     /// pthread_t pthread_self(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_self.html
     pub extern fn pthread_self() pthread_t;
@@ -2806,6 +2834,8 @@ pub const pthread_mutexattr_t = impdef.pthread_mutexattr_t;
 pub const pthread_mutex_t = impdef.pthread_mutex_t;
 pub const pthread_condattr_t = impdef.pthread_condattr_t;
 pub const pthread_cond_t = impdef.pthread_cond_t;
+pub const pthread_rwlockattr_t = impdef.pthread_rwlockattr_t;
+pub const pthread_rwlock_t = impdef.pthread_rwlock_t;
 
 pub const AT = struct {
     pub const FDCWD = -100;
@@ -3521,4 +3551,32 @@ pub fn faccessat(fd: c_int, path: [*:0]const u8, amode: c_int, flag: c_int) !voi
     const rc = libc.faccessat(fd, path, amode, flag);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
+}
+pub fn pthread_rwlock_init(noalias rwlock: *pthread_rwlock_t, noalias attr: ?*const pthread_rwlockattr_t) !void {
+    const rc = libc.pthread_rwlock_init(rwlock, attr);
+    if (rc != 0) return errno.fromInt(rc);
+}
+pub fn pthread_rwlock_destroy(rwlock: *pthread_rwlock_t) !void {
+    const rc = libc.pthread_rwlock_destroy(rwlock);
+    if (rc != 0) return errno.fromInt(rc);
+}
+pub fn pthread_rwlock_rdlock(rwlock: *pthread_rwlock_t) !void {
+    const rc = libc.pthread_rwlock_rdlock(rwlock);
+    if (rc != 0) return errno.fromInt(rc);
+}
+pub fn pthread_rwlock_tryrdlock(rwlock: *pthread_rwlock_t) !void {
+    const rc = libc.pthread_rwlock_tryrdlock(rwlock);
+    if (rc != 0) return errno.fromInt(rc);
+}
+pub fn pthread_rwlock_wrlock(rwlock: *pthread_rwlock_t) !void {
+    const rc = libc.pthread_rwlock_wrlock(rwlock);
+    if (rc != 0) return errno.fromInt(rc);
+}
+pub fn pthread_rwlock_trywrlock(rwlock: *pthread_rwlock_t) !void {
+    const rc = libc.pthread_rwlock_trywrlock(rwlock);
+    if (rc != 0) return errno.fromInt(rc);
+}
+pub fn pthread_rwlock_unlock(rwlock: *pthread_rwlock_t) !void {
+    const rc = libc.pthread_rwlock_unlock(rwlock);
+    if (rc != 0) return errno.fromInt(rc);
 }
