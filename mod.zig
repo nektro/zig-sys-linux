@@ -3517,3 +3517,8 @@ pub fn futimens(fd: c_int, times: [2]struct_timespec) !void {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
 }
+pub fn faccessat(fd: c_int, path: [*:0]const u8, amode: c_int, flag: c_int) !void {
+    const rc = libc.faccessat(fd, path, amode, flag);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}

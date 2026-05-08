@@ -62,4 +62,5 @@ test {
     _ = &linux.getrandom;
     _ = &linux.flock;
     _ = &linux.futimens;
+    _ = &linux.faccessat;
 }
