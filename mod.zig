@@ -1,6 +1,6 @@
 const std = @import("std");
-const builtin = @import("builtin");
 const linux = std.os.linux;
+const builtin = @import("builtin");
 
 comptime {
     std.debug.assert(builtin.target.os.tag == .linux);
@@ -2780,6 +2780,21 @@ pub const libc = struct {
     pub extern fn flock(fd: c_int, op: c_int) c_int;
     pub extern fn futimens(fd: c_int, times: *const [2]struct_timespec) c_int;
 };
+
+comptime {
+    const C = struct {
+        fn getdents(dirfd: c_int, buf: [*]u8, nbytes: usize) callconv(.c) c_int {
+            const rc = std.os.linux.syscall3(.getdents64, @intCast(dirfd), @intFromPtr(buf), nbytes);
+            const signed_r: isize = @bitCast(rc);
+            if (signed_r < 0 and signed_r > -4096) {
+                libc.__errno_location().* = @intCast(-signed_r);
+                return -1;
+            }
+            return @intCast(rc);
+        }
+    };
+    if (builtin.abi.isGnu()) @export(&C.getdents, .{ .name = "getdents", .linkage = .weak }); // glibc chooses to only expose this as getdents64
+}
 
 pub const clock_t = c_long;
 pub const pid_t = c_int;
