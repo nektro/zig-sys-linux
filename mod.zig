@@ -1482,6 +1482,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/fsync.html
     pub extern fn fsync(fd: c_int) c_int;
 
+    /// int futimens(int fd, const struct timespec times[2]);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/futimens.html
+    pub extern fn futimens(fd: c_int, times: *const [2]struct_timespec) c_int;
+
     /// int getaddrinfo(const char *restrict nodename, const char *restrict servname, const struct addrinfo *restrict hints, struct addrinfo **restrict res);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getaddrinfo.html
     pub extern fn getaddrinfo(noalias nodename: ?[*:0]const u8, noalias servname: ?[*:0]const u8, noalias req: ?*const struct_addrinfo, noalias pai: **const struct_addrinfo) c_int;
@@ -2778,7 +2782,6 @@ pub const libc = struct {
     pub extern fn sched_getaffinity(pid: pid_t, cpusetsize: usize, mask: *cpu_set_t) c_int;
     pub extern fn getrandom(buf: [*]u8, size: usize, flags: c_uint) isize;
     pub extern fn flock(fd: c_int, op: c_int) c_int;
-    pub extern fn futimens(fd: c_int, times: *const [2]struct_timespec) c_int;
 };
 
 comptime {
