@@ -1,6 +1,7 @@
 const std = @import("std");
 const linux = std.os.linux;
 const builtin = @import("builtin");
+const arch = builtin.target.cpu.arch;
 
 comptime {
     std.debug.assert(builtin.target.os.tag == .linux);
@@ -2864,99 +2865,37 @@ pub const AT = struct {
 };
 
 pub const O = struct {
-    pub usingnamespace switch (builtin.target.cpu.arch) {
-        // generic
-        .x86_64,
-        .riscv64,
-        => struct {
-            pub const CREAT = 0o100;
-            pub const EXCL = 0o200;
-            pub const NOCTTY = 0o400;
-            pub const TRUNC = 0o1000;
-            pub const APPEND = 0o2000;
-            pub const NONBLOCK = 0o4000;
-            pub const DSYNC = 0o10000;
-            pub const SYNC = 0o4010000;
-            pub const RSYNC = 0o4010000;
-            pub const DIRECTORY = 0o200000;
-            pub const NOFOLLOW = 0o400000;
-            pub const CLOEXEC = 0o2000000;
-            pub const ASYNC = 0o20000;
-            pub const DIRECT = 0o40000;
-            pub const LARGEFILE = 0o100000;
-            pub const NOATIME = 0o1000000;
-            pub const PATH = 0o10000000;
-            pub const TMPFILE = 0o20200000;
-            pub const NDELAY = O.NONBLOCK;
-        },
-        .aarch64,
-        => struct {
-            pub const CREAT = 0o100;
-            pub const EXCL = 0o200;
-            pub const NOCTTY = 0o400;
-            pub const TRUNC = 0o1000;
-            pub const APPEND = 0o2000;
-            pub const NONBLOCK = 0o4000;
-            pub const DSYNC = 0o10000;
-            pub const SYNC = 0o4010000;
-            pub const RSYNC = 0o4010000;
-            pub const DIRECTORY = 0o40000;
-            pub const NOFOLLOW = 0o100000;
-            pub const CLOEXEC = 0o2000000;
-            pub const ASYNC = 0o20000;
-            pub const DIRECT = 0o200000;
-            pub const LARGEFILE = 0o400000;
-            pub const NOATIME = 0o1000000;
-            pub const PATH = 0o10000000;
-            pub const TMPFILE = 0o20040000;
-            pub const NDELAY = O.NONBLOCK;
-        },
-        .powerpc64le,
-        => struct {
-            pub const CREAT = 0o100;
-            pub const EXCL = 0o200;
-            pub const NOCTTY = 0o400;
-            pub const TRUNC = 0o1000;
-            pub const APPEND = 0o2000;
-            pub const NONBLOCK = 0o4000;
-            pub const DSYNC = 0o10000;
-            pub const SYNC = 0o4010000;
-            pub const RSYNC = 0o4010000;
-            pub const DIRECTORY = 0o40000;
-            pub const NOFOLLOW = 0o100000;
-            pub const CLOEXEC = 0o2000000;
-            pub const ASYNC = 0o20000;
-            pub const DIRECT = 0o400000;
-            pub const LARGEFILE = 0o200000;
-            pub const NOATIME = 0o1000000;
-            pub const PATH = 0o10000000;
-            pub const TMPFILE = 0o20040000;
-            pub const NDELAY = O.NONBLOCK;
-        },
-        .mips64el,
-        => struct {
-            pub const CREAT = 0o400;
-            pub const EXCL = 0o2000;
-            pub const NOCTTY = 0o4000;
-            pub const TRUNC = 0o1000;
-            pub const APPEND = 0o010;
-            pub const NONBLOCK = 0o200;
-            pub const DSYNC = 0o020;
-            pub const SYNC = 0o40020;
-            pub const RSYNC = 0o40020;
-            pub const DIRECTORY = 0o200000;
-            pub const NOFOLLOW = 0o400000;
-            pub const CLOEXEC = 0o2000000;
-            pub const ASYNC = 0o10000;
-            pub const DIRECT = 0o100000;
-            pub const LARGEFILE = 0o20000;
-            pub const NOATIME = 0o1000000;
-            pub const PATH = 0o10000000;
-            pub const TMPFILE = 0o20200000;
-            pub const NDELAY = O.NONBLOCK;
-        },
+    pub const CREAT = if (arch != .mips64el) 0o100 else 0o400;
+    pub const EXCL = if (arch != .mips64el) 0o200 else 0o2000;
+    pub const NOCTTY = if (arch != .mips64el) 0o400 else 0o4000;
+    pub const TRUNC = 0o1000;
+    pub const APPEND = if (arch != .mips64el) 0o2000 else 0o010;
+    pub const NONBLOCK = if (arch != .mips64el) 0o4000 else 0o200;
+    pub const DSYNC = if (arch != .mips64el) 0o10000 else 0o020;
+    pub const SYNC = if (arch != .mips64el) 0o4010000 else 0o40020;
+    pub const RSYNC = if (arch != .mips64el) 0o4010000 else 0o40020;
+    pub const DIRECTORY = if (arch == .aarch64 or arch == .powerpc64le) 0o40000 else 0o200000;
+    pub const NOFOLLOW = if (arch == .aarch64 or arch == .powerpc64le) 0o100000 else 0o400000;
+    pub const CLOEXEC = 0o2000000;
+    pub const ASYNC = if (arch != .mips64el) 0o20000 else 0o10000;
+    pub const DIRECT = switch (arch) {
+        .x86_64, .riscv64 => 0o40000, // generic
+        .aarch64 => 0o200000,
+        .powerpc64le => 0o400000,
+        .mips64el => 0o100000,
         else => @compileError("TODO"),
     };
+    pub const LARGEFILE = switch (arch) {
+        .x86_64, .riscv64 => 0o100000, // generic
+        .aarch64 => 0o400000,
+        .powerpc64le => 0o200000,
+        .mips64el => 0o20000,
+        else => @compileError("TODO"),
+    };
+    pub const NOATIME = 0o1000000;
+    pub const PATH = 0o10000000;
+    pub const TMPFILE = if (arch == .aarch64 or arch == .powerpc64le) 0o20040000 else 0o20200000;
+    pub const NDELAY = O.NONBLOCK;
     pub const SEARCH = O.PATH;
     pub const EXEC = O.PATH;
     pub const TTY_INIT = 0;
