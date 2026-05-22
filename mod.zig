@@ -2221,7 +2221,7 @@ pub const libc = struct {
 
     /// int pthread_create(pthread_t *restrict thread, const pthread_attr_t *restrict attr, void *(*start_routine)(void*), void *restrict arg);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_create.html
-    pub extern fn pthread_create(noalias newthread: *pthread_t, noalias attr: *const pthread_attr_t, start_routine: *const fn (*anyopaque) callconv(.C) ?*anyopaque, noalias arg: *anyopaque) c_int;
+    pub extern fn pthread_create(noalias newthread: *pthread_t, noalias attr: *const pthread_attr_t, start_routine: *const fn (*anyopaque) callconv(.c) ?*anyopaque, noalias arg: *anyopaque) c_int;
 
     /// int pthread_detach(pthread_t thread);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pthread_detach.html
@@ -3406,7 +3406,7 @@ pub fn pthread_attr_setguardsize(attr: *pthread_attr_t, size: usize) !void {
     if (rc != 0) return errno.fromInt(rc);
     std.debug.assert(rc == 0);
 }
-pub fn pthread_create(noalias newthread: *pthread_t, noalias attr: *const pthread_attr_t, start_routine: *const fn (*anyopaque) callconv(.C) ?*anyopaque, noalias arg: *anyopaque) !void {
+pub fn pthread_create(noalias newthread: *pthread_t, noalias attr: *const pthread_attr_t, start_routine: *const fn (*anyopaque) callconv(.c) ?*anyopaque, noalias arg: *anyopaque) !void {
     const rc = libc.pthread_create(newthread, attr, start_routine, arg);
     if (rc != 0) return errno.fromInt(rc);
     std.debug.assert(rc == 0);
