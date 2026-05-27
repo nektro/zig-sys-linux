@@ -2155,6 +2155,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pause.html
     pub extern fn pause() c_int;
 
+    /// int pipe2(int fildes[2], int flag);
+    /// https://pubs.opengroup.org/onlinepubs/9799919799/functions/pipe.html
+    pub extern fn pipe2(pipefd: *[2]c_int, flag: c_int) c_int;
+
     /// double pow(double x, double y);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pow.html
     pub extern fn pow(x: f64, y: f64) f64;
@@ -3536,4 +3540,11 @@ pub fn pthread_rwlock_trywrlock(rwlock: *pthread_rwlock_t) !void {
 pub fn pthread_rwlock_unlock(rwlock: *pthread_rwlock_t) !void {
     const rc = libc.pthread_rwlock_unlock(rwlock);
     if (rc != 0) return errno.fromInt(rc);
+}
+pub fn pipe2(flag: c_int) ![2]c_int {
+    var fildes: [2]c_int = @splat(-1);
+    const rc = libc.pipe2(&fildes, flag);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+    return fildes;
 }
