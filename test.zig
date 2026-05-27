@@ -75,4 +75,5 @@ test {
     _ = &linux.fork;
     _ = &linux.fchdir;
     _ = &linux.execvp;
+    _ = &linux.dup2;
 }

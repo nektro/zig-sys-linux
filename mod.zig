@@ -3614,3 +3614,8 @@ pub fn execvp(file: [*:0]const u8, argv: [*:null]const ?[*:0]const u8) !noreturn
     std.debug.assert(rc == -1);
     return errno.fromInt(errno.fromLibC());
 }
+pub fn dup2(fildes: c_int, fildes2: c_int) !void {
+    const rc = libc.dup2(fildes, fildes2);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+}
