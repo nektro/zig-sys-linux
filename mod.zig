@@ -2167,6 +2167,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9799919799/functions/pipe.html
     pub extern fn pipe2(pipefd: *[2]c_int, flag: c_int) c_int;
 
+    /// int poll(struct pollfd fds[], nfds_t nfds, int timeout);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/poll.html
+    pub extern fn poll(fds: [*]struct_pollfd, nfds: nfds_t, timeout: c_int) c_int;
+
     /// double pow(double x, double y);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/pow.html
     pub extern fn pow(x: f64, y: f64) f64;
@@ -2856,6 +2860,8 @@ pub const struct_sockaddr_un = extern struct { family: AF = .UNIX, path: [108]u8
 pub const struct_addrinfo = extern struct { flags: c_int, family: c_int, socktype: c_int, protocol: c_int, addrlen: socklen_t, addr: ?*struct_sockaddr, canonname: ?[*:0]u8, next: ?*struct_addrinfo };
 pub const struct_dirent = extern struct { ino: ino_t, off: off_t, reclen: c_ushort, type: DT, name: [NAME_MAX + 1]u8 };
 pub const cpu_set_t = [1024 / 8 / @sizeOf(c_ulong)]c_ulong;
+pub const nfds_t = c_ulong;
+pub const struct_pollfd = extern struct { fd: c_int, events: c_short, revents: c_short };
 
 const impdef = @cImport({
     @cInclude("pthread.h");
@@ -3250,6 +3256,21 @@ pub const SIG = struct {
     pub const UNUSED = SYS;
 };
 
+pub const POLL = struct {
+    pub const IN = 0x001;
+    pub const PRI = 0x002;
+    pub const OUT = 0x004;
+    pub const ERR = 0x008;
+    pub const HUP = 0x010;
+    pub const NVAL = 0x020;
+    pub const RDNORM = 0x040;
+    pub const RDBAND = 0x080;
+    pub const WRNORM = if (arch.isMIPS()) OUT else 0x100;
+    pub const WRBAND = if (arch.isMIPS()) 0x100 else 0x200;
+    pub const MSG = 0x400;
+    pub const RDHUP = 0x2000;
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
@@ -3618,4 +3639,10 @@ pub fn dup2(fildes: c_int, fildes2: c_int) !void {
     const rc = libc.dup2(fildes, fildes2);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
+}
+pub fn poll(fds: []struct_pollfd, timeout_ms: c_int) !c_int {
+    const rc = libc.poll(fds.ptr, fds.len, timeout_ms);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return rc;
 }

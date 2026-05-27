@@ -76,4 +76,5 @@ test {
     _ = &linux.fchdir;
     _ = &linux.execvp;
     _ = &linux.dup2;
+    _ = &linux.poll;
 }
