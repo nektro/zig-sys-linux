@@ -3600,3 +3600,8 @@ pub fn fork() !pid_t {
     std.debug.assert(rc >= 0);
     return rc;
 }
+pub fn fchdir(fildes: c_int) !void {
+    const rc = libc.fchdir(fildes);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}

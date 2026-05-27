@@ -73,4 +73,5 @@ test {
     _ = &linux.pipe2;
     _ = &linux.kill;
     _ = &linux.fork;
+    _ = &linux.fchdir;
 }
