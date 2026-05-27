@@ -1895,6 +1895,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/jn.html
     pub extern fn jn(n: c_int, x: f64) f64;
 
+    /// int kill(pid_t pid, int sig);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/kill.html
+    pub extern fn kill(pid: pid_t, sig: c_int) c_int;
+
     /// long labs(long i);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/labs.html
     pub extern fn labs(i: c_long) c_long;
@@ -3205,6 +3209,43 @@ pub const LOCK = struct {
     pub const UN = 8;
 };
 
+pub const SIG = struct {
+    pub const HUP = 1;
+    pub const INT = 2;
+    pub const QUIT = 3;
+    pub const ILL = 4;
+    pub const TRAP = 5;
+    pub const ABRT = 6;
+    pub const IOT = ABRT;
+    pub const BUS = 7;
+    pub const FPE = 8;
+    pub const KILL = 9;
+    pub const USR1 = 10;
+    pub const SEGV = 11;
+    pub const USR2 = 12;
+    pub const PIPE = 13;
+    pub const ALRM = 14;
+    pub const TERM = 15;
+    pub const STKFLT = 16;
+    pub const CHLD = 17;
+    pub const CONT = 18;
+    pub const STOP = 19;
+    pub const TSTP = 20;
+    pub const TTIN = 21;
+    pub const TTOU = 22;
+    pub const URG = 23;
+    pub const XCPU = 24;
+    pub const XFSZ = 25;
+    pub const VTALRM = 26;
+    pub const PROF = 27;
+    pub const WINCH = 28;
+    pub const IO = 29;
+    pub const POLL = 29;
+    pub const PWR = 30;
+    pub const SYS = 31;
+    pub const UNUSED = SYS;
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
@@ -3547,4 +3588,9 @@ pub fn pipe2(flag: c_int) ![2]c_int {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
     return fildes;
+}
+pub fn kill(pid: pid_t, sig: c_int) !void {
+    const rc = libc.kill(pid, sig);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
 }

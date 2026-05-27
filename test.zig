@@ -71,4 +71,5 @@ test {
     _ = &linux.pthread_rwlock_trywrlock;
     _ = &linux.pthread_rwlock_unlock;
     _ = &linux.pipe2;
+    _ = &linux.kill;
 }
