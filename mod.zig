@@ -3594,3 +3594,9 @@ pub fn kill(pid: pid_t, sig: c_int) !void {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
 }
+pub fn fork() !pid_t {
+    const rc = libc.fork();
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return rc;
+}
