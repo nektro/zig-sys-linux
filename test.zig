@@ -77,4 +77,5 @@ test {
     _ = &linux.execvp;
     _ = &linux.dup2;
     _ = &linux.poll;
+    _ = &linux.waitpid;
 }

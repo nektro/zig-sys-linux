@@ -2759,6 +2759,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/uselocale.html
     pub extern fn uselocale(newloc: locale_t) locale_t;
 
+    /// pid_t waitpid(pid_t pid, int *stat_loc, int options);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/waitpid.html
+    pub extern fn waitpid(pid: pid_t, stat_loc: ?*c_int, options: c_int) pid_t;
+
     /// int wctob(wint_t c);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/wctob.html
     pub extern fn wctob(c: wint_t) c_int;
@@ -3271,6 +3275,40 @@ pub const POLL = struct {
     pub const RDHUP = 0x2000;
 };
 
+pub const W = struct {
+    pub const NOHANG = 1;
+    pub const UNTRACED = 2;
+    pub const STOPPED = 2;
+    pub const EXITED = 4;
+    pub const CONTINUED = 8;
+    pub const NOWAIT = 0x1000000;
+
+    pub fn EXITSTATUS(s: c_int) u8 {
+        return @intCast((s & 0xff00) >> 8);
+    }
+    pub fn TERMSIG(s: c_int) u8 {
+        return @intCast(s & 0x7f);
+    }
+    pub fn STOPSIG(s: c_int) u8 {
+        return EXITSTATUS(s);
+    }
+    pub fn COREDUMP(s: c_int) c_uint {
+        return s & 0x80;
+    }
+    pub fn IFEXITED(s: c_int) bool {
+        return TERMSIG(s) == 0;
+    }
+    pub fn IFSTOPPED(s: c_int) bool {
+        return ((s & 0xffff) *% 0x10001) >> 8 > 0x7f00;
+    }
+    pub fn IFSIGNALED(s: c_int) bool {
+        return s & 0xffff -% 1 < 0xff;
+    }
+    pub fn IFCONTINUED(s: c_int) bool {
+        return s == 0xffff;
+    }
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
@@ -3645,4 +3683,11 @@ pub fn poll(fds: []struct_pollfd, timeout_ms: c_int) !c_int {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return rc;
+}
+pub fn waitpid(pid: pid_t, options: c_int) !struct { pid_t, c_int } {
+    var status: c_int = 0;
+    const rc = libc.waitpid(pid, &status, options);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return .{ rc, status };
 }
