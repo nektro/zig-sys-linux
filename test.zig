@@ -74,4 +74,5 @@ test {
     _ = &linux.kill;
     _ = &linux.fork;
     _ = &linux.fchdir;
+    _ = &linux.execvp;
 }

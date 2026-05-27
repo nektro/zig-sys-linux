@@ -1271,6 +1271,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/erfl.html
     pub extern fn erfl(x: c_longdouble) c_longdouble;
 
+    /// int execvp(const char *file, char *const argv[]);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/execvp.html
+    pub extern fn execvp(file: [*:0]const u8, argv: [*:null]const ?[*:0]const u8) c_int;
+
     /// void exit(int status);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/exit.html
     pub extern fn exit(status: c_int) noreturn;
@@ -3604,4 +3608,9 @@ pub fn fchdir(fildes: c_int) !void {
     const rc = libc.fchdir(fildes);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
+}
+pub fn execvp(file: [*:0]const u8, argv: [*:null]const ?[*:0]const u8) !noreturn {
+    const rc = libc.execvp(file, argv);
+    std.debug.assert(rc == -1);
+    return errno.fromInt(errno.fromLibC());
 }
