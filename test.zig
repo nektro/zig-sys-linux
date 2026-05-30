@@ -80,4 +80,5 @@ test {
     _ = &linux.waitpid;
     _ = &linux.unlinkat;
     _ = &linux.lseek;
+    _ = &linux.getcwd;
 }

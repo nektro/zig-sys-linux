@@ -1503,6 +1503,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getchar_unlocked.html
     pub extern fn getchar_unlocked() c_int;
 
+    /// char *getcwd(char *buf, size_t size);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getcwd.html
+    pub extern fn getcwd(buf: [*]u8, size: usize) ?[*:0]u8;
+
     /// gid_t getegid(void);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/getegid.html
     pub extern fn getegid() gid_t;
@@ -3712,4 +3716,9 @@ pub fn lseek(fd: c_int, offset: off_t, whence: c_int) !void {
     const rc = libc.lseek(fd, offset, whence);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
+}
+pub fn getcwd(buf: []u8) ![*:0]u8 {
+    const rc = libc.getcwd(buf.ptr, buf.len);
+    if (rc == null) return errno.fromInt(errno.fromLibC());
+    return rc.?;
 }
