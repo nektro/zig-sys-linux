@@ -79,4 +79,5 @@ test {
     _ = &linux.poll;
     _ = &linux.waitpid;
     _ = &linux.unlinkat;
+    _ = &linux.lseek;
 }

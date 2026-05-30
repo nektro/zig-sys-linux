@@ -3313,6 +3313,14 @@ pub const W = struct {
     }
 };
 
+pub const SEEK = struct {
+    pub const SET = 0;
+    pub const CUR = 1;
+    pub const END = 2;
+    pub const DATA = 3;
+    pub const HOLE = 4;
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
@@ -3699,4 +3707,9 @@ pub fn unlinkat(fd: c_int, name: [*:0]const u8, flag: c_int) !void {
     const rc = libc.unlinkat(fd, name, flag);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
+}
+pub fn lseek(fd: c_int, offset: off_t, whence: c_int) !void {
+    const rc = libc.lseek(fd, offset, whence);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
 }
