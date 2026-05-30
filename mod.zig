@@ -3722,3 +3722,8 @@ pub fn getcwd(buf: []u8) ![*:0]u8 {
     if (rc == null) return errno.fromInt(errno.fromLibC());
     return rc.?;
 }
+pub fn fchmod(fd: c_int, mode: mode_t) !void {
+    const rc = libc.fchmod(fd, mode);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
+}
