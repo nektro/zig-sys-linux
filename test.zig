@@ -78,4 +78,5 @@ test {
     _ = &linux.dup2;
     _ = &linux.poll;
     _ = &linux.waitpid;
+    _ = &linux.unlinkat;
 }

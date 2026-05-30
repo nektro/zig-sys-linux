@@ -2751,6 +2751,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/umask.html
     pub extern fn umask(cmask: mode_t) mode_t;
 
+    /// int unlinkat(int fd, const char *path, int flag);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/unlinkat.html
+    pub extern fn unlinkat(fd: c_int, name: [*:0]const u8, flag: c_int) c_int;
+
     /// int unlockpt(int fildes);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/unlockpt.html
     pub extern fn unlockpt(fd: c_int) c_int;
@@ -3690,4 +3694,9 @@ pub fn waitpid(pid: pid_t, options: c_int) !struct { pid_t, c_int } {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc >= 0);
     return .{ rc, status };
+}
+pub fn unlinkat(fd: c_int, name: [*:0]const u8, flag: c_int) !void {
+    const rc = libc.unlinkat(fd, name, flag);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc == 0);
 }
