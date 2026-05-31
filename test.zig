@@ -81,4 +81,6 @@ test {
     _ = &linux.unlinkat;
     _ = &linux.lseek;
     _ = &linux.getcwd;
+    _ = &linux.fchmod;
+    _ = &linux.copy_file_range;
 }

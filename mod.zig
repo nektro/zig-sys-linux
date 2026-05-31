@@ -2811,6 +2811,7 @@ pub const libc = struct {
     pub extern fn sched_getaffinity(pid: pid_t, cpusetsize: usize, mask: *cpu_set_t) c_int;
     pub extern fn getrandom(buf: [*]u8, size: usize, flags: c_uint) isize;
     pub extern fn flock(fd: c_int, op: c_int) c_int;
+    pub extern fn copy_file_range(fd_int: c_int, off_in: ?*off_t, fd_out: c_int, off_out: ?*off_t, size: usize, flags: c_uint) isize;
 };
 
 comptime {
@@ -3726,4 +3727,10 @@ pub fn fchmod(fd: c_int, mode: mode_t) !void {
     const rc = libc.fchmod(fd, mode);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
+}
+pub fn copy_file_range(fd_int: c_int, off_in: ?*off_t, fd_out: c_int, off_out: ?*off_t, size: usize, flags: c_uint) errno.Error!usize {
+    const rc = libc.copy_file_range(fd_int, off_in, fd_out, off_out, size, flags);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return @intCast(rc);
 }
