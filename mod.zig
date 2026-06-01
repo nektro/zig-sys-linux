@@ -875,7 +875,6 @@ pub const errno = struct {
         .xcore,
         .nvptx,
         .nvptx64,
-        .spirv,
         .spirv32,
         .spirv64,
         .kalimba,
@@ -883,6 +882,7 @@ pub const errno = struct {
         .wasm32,
         .wasm64,
         .ve,
+        .or1k,
         => unreachable,
     };
 
