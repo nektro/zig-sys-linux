@@ -5,6 +5,7 @@ const arch = builtin.target.cpu.arch;
 
 comptime {
     std.debug.assert(builtin.target.os.tag == .linux);
+    std.debug.assert(@bitSizeOf(usize) == 64);
 }
 
 pub const errno = struct {
@@ -146,6 +147,7 @@ pub const errno = struct {
 
     pub const Enum = switch (builtin.target.cpu.arch) {
         .arc,
+        .arceb,
         .arm,
         .armeb,
         .aarch64,
@@ -156,13 +158,17 @@ pub const errno = struct {
         .loongarch64,
         .m68k,
         .riscv32,
+        .riscv32be,
         .riscv64,
+        .riscv64be,
         .s390x,
         .sparc,
         .sparc64,
+        .x86_16,
         .x86,
         .x86_64,
         .xtensa,
+        .xtensaeb,
         => enum(c_ushort) {
             EPERM = 1,
             ENOENT = 2,
@@ -856,12 +862,12 @@ pub const errno = struct {
             pub const EWOULDBLOCK: Enum = .EAGAIN;
             pub const ENOTSUP: Enum = .EOPNOTSUPP;
         },
-        // alpha
+        .alpha => unreachable,
+        .microblaze, .microblazeel => unreachable,
+        .sh, .sheb => unreachable,
         // nios2
-        // microblaze
         // openrisc
         // parisc
-        // sh
         // um
         // @compileError("TODO: " ++ @tagName(v)),
         .avr,
@@ -883,6 +889,9 @@ pub const errno = struct {
         .wasm64,
         .ve,
         .or1k,
+        .hppa,
+        .hppa64,
+        .kvx,
         => unreachable,
     };
 
@@ -2857,9 +2866,23 @@ pub const struct_timeval = linux.timeval;
 pub const DIR = opaque {};
 pub const time_t = i64;
 pub const div_t = extern struct { quot: c_int, rem: c_int };
-pub const off_t = linux.off_t;
-pub const ino_t = linux.ino_t;
-pub const struct_stat = linux.Stat;
+pub const off_t = i64;
+pub const ino_t = u64;
+pub const dev_t = u64;
+pub const nlink_t = c_ulong;
+pub const blksize_t = c_long;
+pub const blkcnt_t = i64;
+pub const struct_stat = switch (arch) {
+    .mips64, .mips64el => extern struct { dev: dev_t, __pad1: [3]c_int, ino: ino_t, mode: mode_t, nlink: nlink_t, uid: uid_t, gid: gid_t, rdev: dev_t, __pad2: [2]c_uint, size: off_t, __pad3: c_int, atim: struct_timespec, mtim: struct_timespec, ctim: struct_timespec, blksize: blksize_t, __pad4: c_uint, blocks: blkcnt_t, __pad5: [14]c_int },
+    .powerpc64, .powerpc64le => extern struct { dev: dev_t, ino: ino_t, nlink: nlink_t, mode: mode_t, uid: uid_t, gid: gid_t, rdev: dev_t, size: off_t, blksize: blksize_t, blocks: blkcnt_t, atim: struct_timespec, mtim: struct_timespec, ctim: struct_timespec, __unused: [3]c_ulong },
+    .s390x => extern struct { dev: dev_t, ino: ino_t, nlink: nlink_t, mode: mode_t, uid: uid_t, gid: gid_t, rdev: dev_t, size: off_t, atim: struct_timespec, mtim: struct_timespec, ctim: struct_timespec, blksize: blksize_t, blocks: blkcnt_t, __unused: [3]c_ulong },
+    .x86_64 => extern struct { dev: dev_t, ino: ino_t, nlink: nlink_t, mode: mode_t, uid: uid_t, gid: gid_t, __pad0: c_uint, rdev: dev_t, size: off_t, blksize: blksize_t, blocks: blkcnt_t, atim: struct_timespec, mtim: struct_timespec, ctim: struct_timespec, __unused: [3]c_long },
+    // generic
+    .aarch64,
+    .riscv64,
+    => extern struct { dev: dev_t, ino: ino_t, mode: mode_t, nlink: nlink_t, uid: uid_t, gid: gid_t, rdev: dev_t, __pad: c_ulonglong, size: off_t, blksize: blksize_t, __pad2: c_int, blocks: blkcnt_t, atim: struct_timespec, mtim: struct_timespec, ctim: struct_timespec, __unused: [2]c_uint },
+    else => unreachable,
+};
 pub const struct_iovec = extern struct { base: [*]u8, len: usize };
 pub const in_addr_t = u32;
 pub const in_port_t = u16;
