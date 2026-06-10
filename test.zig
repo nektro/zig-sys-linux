@@ -83,4 +83,5 @@ test {
     _ = &linux.getcwd;
     _ = &linux.fchmod;
     _ = &linux.copy_file_range;
+    _ = &linux.dup;
 }

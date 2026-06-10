@@ -3758,3 +3758,9 @@ pub fn copy_file_range(fd_int: c_int, off_in: ?*off_t, fd_out: c_int, off_out: ?
     std.debug.assert(rc >= 0);
     return @intCast(rc);
 }
+pub fn dup(fildes: c_int) !c_int {
+    const rc = libc.dup(fildes);
+    if (rc == -1) return errno.fromInt(errno.fromLibC());
+    std.debug.assert(rc >= 0);
+    return rc;
+}
