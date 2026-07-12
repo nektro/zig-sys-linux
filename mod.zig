@@ -2898,6 +2898,7 @@ pub const struct_dirent = extern struct { ino: ino_t, off: off_t, reclen: c_usho
 pub const cpu_set_t = [1024 / 8 / @sizeOf(c_ulong)]c_ulong;
 pub const nfds_t = c_ulong;
 pub const struct_pollfd = extern struct { fd: c_int, events: c_short, revents: c_short };
+pub const struct_tm = extern struct { sec: c_int, min: c_int, hour: c_int, mday: c_int, mon: c_int, year: c_int, wday: c_int, yday: c_int, isdst: c_int, gmtoff: c_long, zone: [*:0]const u8 };
 
 const impdef = @cImport({
     @cInclude("pthread.h");
