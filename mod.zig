@@ -2821,6 +2821,7 @@ pub const libc = struct {
     pub extern fn getrandom(buf: [*]u8, size: usize, flags: c_uint) isize;
     pub extern fn flock(fd: c_int, op: c_int) c_int;
     pub extern fn copy_file_range(fd_int: c_int, off_in: ?*off_t, fd_out: c_int, off_out: ?*off_t, size: usize, flags: c_uint) isize;
+    pub extern fn arc4random_buf(buf: [*]u8, n: usize) void;
 };
 
 comptime {
