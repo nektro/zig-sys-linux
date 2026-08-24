@@ -2852,7 +2852,6 @@ pub const struct_utmpx = opaque {};
 pub const wint_t = c_uint;
 pub const struct_if_nameindex = opaque {};
 pub const struct_lconv = opaque {};
-pub const pthread_t = *opaque {};
 pub const FILE = opaque {};
 pub const locale_t = *const opaque {};
 pub const nl_catd = *const opaque {};
@@ -2903,6 +2902,7 @@ pub const struct_tm = extern struct { sec: c_int, min: c_int, hour: c_int, mday:
 const impdef = @cImport({
     @cInclude("pthread.h");
 });
+pub const pthread_t = impdef.pthread_t;
 pub const pthread_attr_t = impdef.pthread_attr_t;
 pub const pthread_mutexattr_t = impdef.pthread_mutexattr_t;
 pub const pthread_mutex_t = impdef.pthread_mutex_t;
