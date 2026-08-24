@@ -3538,100 +3538,12 @@ pub fn munmap(addr: *const anyopaque, len: usize) errno.Error!void {
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
 }
-pub fn pthread_attr_init(attr: *pthread_attr_t) void {
-    const rc = libc.pthread_attr_init(attr);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_attr_destroy(attr: *pthread_attr_t) void {
-    const rc = libc.pthread_attr_destroy(attr);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_attr_setstacksize(attr: *pthread_attr_t, size: usize) !void {
-    const rc = libc.pthread_attr_setstacksize(attr, size);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_attr_setguardsize(attr: *pthread_attr_t, size: usize) !void {
-    const rc = libc.pthread_attr_setguardsize(attr, size);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_create(noalias newthread: *pthread_t, noalias attr: *const pthread_attr_t, start_routine: *const fn (*anyopaque) callconv(.c) ?*anyopaque, noalias arg: *anyopaque) !void {
-    const rc = libc.pthread_create(newthread, attr, start_routine, arg);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_detach(thread: pthread_t) !void {
-    const rc = libc.pthread_detach(thread);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_join(thread: pthread_t, retval: ?*?*anyopaque) !void {
-    const rc = libc.pthread_join(thread, retval);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
 pub fn sched_getaffinity(pid: pid_t) !cpu_set_t {
     var cpuset: cpu_set_t = undefined;
     const rc = libc.sched_getaffinity(pid, @sizeOf(cpu_set_t), &cpuset);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
     return cpuset;
-}
-pub fn pthread_mutex_init(mutex: *pthread_mutex_t, attr: ?*const pthread_mutexattr_t) !void {
-    const rc = libc.pthread_mutex_init(mutex, attr);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_mutex_destroy(mutex: *pthread_mutex_t) !void {
-    const rc = libc.pthread_mutex_destroy(mutex);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_mutex_trylock(mutex: *pthread_mutex_t) !void {
-    const rc = libc.pthread_mutex_trylock(mutex);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_mutex_lock(mutex: *pthread_mutex_t) !void {
-    const rc = libc.pthread_mutex_lock(mutex);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_mutex_unlock(mutex: *pthread_mutex_t) !void {
-    const rc = libc.pthread_mutex_unlock(mutex);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_cond_init(noalias cond: *pthread_cond_t, noalias attr: ?*const pthread_condattr_t) !void {
-    const rc = libc.pthread_cond_init(cond, attr);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_cond_destroy(cond: *pthread_cond_t) !void {
-    const rc = libc.pthread_cond_destroy(cond);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_cond_wait(noalias cond: *pthread_cond_t, noalias mutex: *pthread_mutex_t) !void {
-    const rc = libc.pthread_cond_wait(cond, mutex);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_cond_timedwait(noalias cond: *pthread_cond_t, noalias mutex: *pthread_mutex_t, noalias abstime: *const struct_timespec) !void {
-    const rc = libc.pthread_cond_timedwait(cond, mutex, abstime);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_cond_signal(cond: *pthread_cond_t) !void {
-    const rc = libc.pthread_cond_signal(cond);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
-}
-pub fn pthread_cond_broadcast(cond: *pthread_cond_t) !void {
-    const rc = libc.pthread_cond_broadcast(cond);
-    if (rc != 0) return errno.fromInt(rc);
-    std.debug.assert(rc == 0);
 }
 pub fn mkdtemp(template: [*:0]u8) ![*:0]u8 {
     const rc = libc.mkdtemp(template);
@@ -3658,34 +3570,6 @@ pub fn faccessat(fd: c_int, path: [*:0]const u8, amode: c_int, flag: c_int) !voi
     const rc = libc.faccessat(fd, path, amode, flag);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
-}
-pub fn pthread_rwlock_init(noalias rwlock: *pthread_rwlock_t, noalias attr: ?*const pthread_rwlockattr_t) !void {
-    const rc = libc.pthread_rwlock_init(rwlock, attr);
-    if (rc != 0) return errno.fromInt(rc);
-}
-pub fn pthread_rwlock_destroy(rwlock: *pthread_rwlock_t) !void {
-    const rc = libc.pthread_rwlock_destroy(rwlock);
-    if (rc != 0) return errno.fromInt(rc);
-}
-pub fn pthread_rwlock_rdlock(rwlock: *pthread_rwlock_t) !void {
-    const rc = libc.pthread_rwlock_rdlock(rwlock);
-    if (rc != 0) return errno.fromInt(rc);
-}
-pub fn pthread_rwlock_tryrdlock(rwlock: *pthread_rwlock_t) !void {
-    const rc = libc.pthread_rwlock_tryrdlock(rwlock);
-    if (rc != 0) return errno.fromInt(rc);
-}
-pub fn pthread_rwlock_wrlock(rwlock: *pthread_rwlock_t) !void {
-    const rc = libc.pthread_rwlock_wrlock(rwlock);
-    if (rc != 0) return errno.fromInt(rc);
-}
-pub fn pthread_rwlock_trywrlock(rwlock: *pthread_rwlock_t) !void {
-    const rc = libc.pthread_rwlock_trywrlock(rwlock);
-    if (rc != 0) return errno.fromInt(rc);
-}
-pub fn pthread_rwlock_unlock(rwlock: *pthread_rwlock_t) !void {
-    const rc = libc.pthread_rwlock_unlock(rwlock);
-    if (rc != 0) return errno.fromInt(rc);
 }
 pub fn pipe2(flag: c_int) ![2]c_int {
     var fildes: [2]c_int = @splat(-1);
