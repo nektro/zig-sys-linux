@@ -2970,6 +2970,7 @@ pub const S = struct {
     pub const IFIFO = 0o010000;
     pub const IFLNK = 0o120000;
     pub const IFSOCK = 0o140000;
+    pub const IFWHT = 0o160000; //unused
 
     pub const ISUID = 0o4000;
     pub const ISGID = 0o2000;
