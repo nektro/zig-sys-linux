@@ -3352,6 +3352,62 @@ pub const SEEK = struct {
     pub const HOLE = 4;
 };
 
+pub const IPV6 = struct {
+    pub const ADDRFORM = 1;
+    pub const @"2292PKTINFO" = 2;
+    pub const @"2292HOPOPTS" = 3;
+    pub const @"2292DSTOPTS" = 4;
+    pub const @"2292RTHDR" = 5;
+    pub const @"2292PKTOPTIONS" = 6;
+    pub const CHECKSUM = 7;
+    pub const @"2292HOPLIMIT" = 8;
+    pub const NEXTHOP = 9;
+    pub const AUTHHDR = 10;
+    pub const UNICAST_HOPS = 16;
+    pub const MULTICAST_IF = 17;
+    pub const MULTICAST_HOPS = 18;
+    pub const MULTICAST_LOOP = 19;
+    pub const JOIN_GROUP = 20;
+    pub const LEAVE_GROUP = 21;
+    pub const ROUTER_ALERT = 22;
+    pub const MTU_DISCOVER = 23;
+    pub const MTU = 24;
+    pub const RECVERR = 25;
+    pub const V6ONLY = 26;
+    pub const JOIN_ANYCAST = 27;
+    pub const LEAVE_ANYCAST = 28;
+    pub const MULTICAST_ALL = 29;
+    pub const ROUTER_ALERT_ISOLATE = 30;
+    pub const IPSEC_POLICY = 34;
+    pub const XFRM_POLICY = 35;
+    pub const HDRINCL = 36;
+    pub const RECVPKTINFO = 49;
+    pub const PKTINFO = 50;
+    pub const RECVHOPLIMIT = 51;
+    pub const HOPLIMIT = 52;
+    pub const RECVHOPOPTS = 53;
+    pub const HOPOPTS = 54;
+    pub const RTHDRDSTOPTS = 55;
+    pub const RECVRTHDR = 56;
+    pub const RTHDR = 57;
+    pub const RECVDSTOPTS = 58;
+    pub const DSTOPTS = 59;
+    pub const RECVPATHMTU = 60;
+    pub const PATHMTU = 61;
+    pub const DONTFRAG = 62;
+    pub const RECVTCLASS = 66;
+    pub const TCLASS = 67;
+    pub const AUTOFLOWLABEL = 70;
+    pub const ADDR_PREFERENCES = 72;
+    pub const MINHOPCOUNT = 73;
+    pub const ORIGDSTADDR = 74;
+    pub const RECVORIGDSTADDR = ORIGDSTADDR;
+    pub const TRANSPARENT = 75;
+    pub const UNICAST_IF = 76;
+    pub const RECVFRAGSIZE = 77;
+    pub const FREEBIND = 78;
+};
+
 pub fn getpid() pid_t {
     return libc.getpid();
 }
