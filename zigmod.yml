@@ -3,3 +3,4 @@ name: sys-linux
 main: mod.zig
 license: MIT
 description: OS bindings layer for interacting with Linux
+translate_c_h: pthread.h

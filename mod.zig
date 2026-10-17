@@ -892,6 +892,9 @@ pub const errno = struct {
         .hppa,
         .hppa64,
         .kvx,
+        .ez80,
+        .m88k,
+        .spork8,
         => unreachable,
     };
 
@@ -908,19 +911,19 @@ pub const errno = struct {
         // assert Enum is sequential
         var value: c_ushort = 0; // SUCCESS
         for (std.enums.values(Enum)) |val| {
-            std.debug.assert(@intFromEnum(val) > value);
-            value = @intFromEnum(val);
+            std.debug.assert(@backingInt(val) > value);
+            value = @backingInt(val);
         }
     }
     comptime {
         // sanity test
-        std.debug.assert(@intFromEnum(Enum.EPERM) == 1);
+        std.debug.assert(@backingInt(Enum.EPERM) == 1);
     }
     const list = blk: {
         const values = std.enums.values(Enum);
-        const len = @intFromEnum(values[values.len - 1]) + 1;
+        const len = @backingInt(values[values.len - 1]) + 1;
         var errors: [len]Error = @splat(error.Unexpected);
-        for (values) |f| errors[@intFromEnum(f)] = @field(Error, @tagName(f));
+        for (values) |f| errors[@backingInt(f)] = @field(Error, @tagName(f));
         const final = errors;
         break :blk final;
     };
@@ -967,7 +970,7 @@ pub const eai = struct {
     };
 
     pub fn fromInt(code: c_int) Error {
-        return switch (@as(Enum, @enumFromInt(code))) {
+        return switch (@as(Enum, @fromBackingInt(@intCast(code)))) {
             .EAI_BADFLAGS => error.EAI_BADFLAGS,
             .EAI_NONAME => error.EAI_NONAME,
             .EAI_AGAIN => error.EAI_AGAIN,
@@ -2900,9 +2903,7 @@ pub const nfds_t = c_ulong;
 pub const struct_pollfd = extern struct { fd: c_int, events: c_short, revents: c_short };
 pub const struct_tm = extern struct { sec: c_int, min: c_int, hour: c_int, mday: c_int, mon: c_int, year: c_int, wday: c_int, yday: c_int, isdst: c_int, gmtoff: c_long, zone: [*:0]const u8 };
 
-const impdef = @cImport({
-    @cInclude("pthread.h");
-});
+const impdef = @import("c");
 pub const pthread_t = impdef.pthread_t;
 pub const pthread_attr_t = impdef.pthread_attr_t;
 pub const pthread_mutexattr_t = impdef.pthread_mutexattr_t;
@@ -3472,7 +3473,7 @@ pub fn fstatat(fd: c_int, path: [*:0]const u8, flag: c_int) errno.Error!struct_s
     return buf;
 }
 pub fn socket(domain: AF, ty: c_int, protocol: c_int) errno.Error!c_uint {
-    const rc = libc.socket(@intFromEnum(domain), ty, protocol);
+    const rc = libc.socket(@backingInt(domain), ty, protocol);
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc > 0);
     return @intCast(rc);
@@ -3493,7 +3494,7 @@ pub fn connect(socketfd: c_uint, address: *const struct_sockaddr, address_len: s
     std.debug.assert(rc == 0);
 }
 pub fn shutdown(socketfd: c_uint, how: SHUT) errno.Error!void {
-    const rc = libc.shutdown(@intCast(socketfd), @intFromEnum(how));
+    const rc = libc.shutdown(@intCast(socketfd), @backingInt(how));
     if (rc == -1) return errno.fromInt(errno.fromLibC());
     std.debug.assert(rc == 0);
 }
