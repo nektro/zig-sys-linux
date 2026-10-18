@@ -2375,6 +2375,10 @@ pub const libc = struct {
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/readlinkat.html
     pub extern fn readlinkat(fd: c_int, noalias path: [*:0]const u8, noalias buf: [*]u8, len: usize) isize;
 
+    /// ssize_t readv(int fildes, const struct iovec *iov, int iovcnt);
+    /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/readv.html
+    pub extern fn readv(fd: c_int, iovec: [*]const struct_iovec, count: c_int) isize;
+
     /// ssize_t recv(int socket, void *buffer, size_t length, int flags);
     /// https://pubs.opengroup.org/onlinepubs/9699919799.orig/functions/recv.html
     pub extern fn recv(fd: c_int, buffer: [*]u8, length: usize, flags: c_int) isize;
